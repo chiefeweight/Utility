@@ -1,0 +1,99 @@
+package com.hy.java.utility.frame;
+
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JPanel;
+
+/**
+ * 用{@code GridBagLayout}管理layout的{@code JPanel}。
+ * <p>
+ * 方法介紹：
+ * <ul>
+ * <li><code>addComponent({@code Component} comp,{@code String} compObjName,{@code int} row, {@code int} column, {@code int} gridwidth, {@code int} gridheight, {@code double} weightx, {@code double} weighty)</code>：向panel中第<code>row</code>行第<code>column</code>列添加特定大小的<code>comp</code>；</li>
+ * </ul>
+ * </p>
+ * <p>
+ * 操作步驟：
+ * <ul>
+ * <li>1、制作各个<code>comp</code>（如{@code JMenu}、{@code JMenuItem}、{@code TextField}、{@code JButton}等）。</li>
+ * <li>2、用<code>addComponent()</code>把制作好的各个comp添加到panel中。</li> <br />
+ * 注：制作各个<code>comp</code>时，必须分别用其各自的setName()设置其在所属panel中的标识。
+ * </ul>
+ * </p>
+ */
+public class GridBagPanel extends JPanel {
+	/**
+	 * Specifies that this component is the next-to-last component in its column or
+	 * row (<code>gridwidth</code>, <code>gridheight</code>), or that this component
+	 * be placed next to the previously added component ( <code>gridx</code>,
+	 * <code>gridy</code>).
+	 * 
+	 * @see java.awt.GridBagConstraints#gridwidth
+	 * @see java.awt.GridBagConstraints#gridheight
+	 * @see java.awt.GridBagConstraints#gridx
+	 * @see java.awt.GridBagConstraints#gridy
+	 */
+	public static final int RELATIVE = 0;
+	/**
+	 * Specifies that this component is the last component in its column or row.
+	 */
+	public static final int REMAINDER = 0;
+	private static final long serialVersionUID = -6984508425312677255L;
+	private GridBagConstraints gridBagConstraints;
+	private GridBagLayout gridBagLayout;
+
+	/**
+	 * {@code GridBagPanel}的构造法。
+	 * 
+	 * @param panelObjName
+	 *            这个panel在其所属{@code CardFrame}中的标识。
+	 */
+	public GridBagPanel(String panelObjName) {
+		this.setName(panelObjName);
+		this.gridBagLayout = new GridBagLayout();
+		this.gridBagConstraints = new GridBagConstraints();
+		this.setLayout(this.gridBagLayout);
+		this.gridBagConstraints.fill = GridBagConstraints.BOTH;
+	}
+
+	/**
+	 * 设置组件的标识（名字）、位置、大小及拉伸程度
+	 * 
+	 * @param comp
+	 *            组件
+	 * @param compObjName
+	 *            组件对象在其所属{@code GridBagPanel}中的标识（即名字），不是这个组件显示的文本
+	 * @param column
+	 *            组件所在行
+	 * @param row
+	 *            组件所在列
+	 * @param gridwidth
+	 *            组件宽度占的格子数
+	 * @param gridheight
+	 *            组件高度占的格子数
+	 * @param weightx
+	 *            The weightx value
+	 * @param weighty
+	 *            The weighty value
+	 * @see java.awt.GridBagConstraints#gridy
+	 * @see java.awt.GridBagConstraints#gridx
+	 * @see java.awt.GridBagConstraints#gridwidth
+	 * @see java.awt.GridBagConstraints#gridheight
+	 * @see java.awt.GridBagConstraints#weightx
+	 * @see java.awt.GridBagConstraints#weighty
+	 */
+	public void addComponent(Component comp, String compObjName, int row, int column, int gridwidth, int gridheight, double weightx, double weighty) {
+		comp.setName(compObjName);
+		this.add(comp);
+		this.gridBagConstraints.gridy = row - 1;
+		this.gridBagConstraints.gridx = column - 1;
+		this.gridBagConstraints.gridwidth = gridwidth;
+		this.gridBagConstraints.gridheight = gridheight;
+		this.gridBagConstraints.weightx = weightx;
+		this.gridBagConstraints.weighty = weighty;
+		this.gridBagLayout.setConstraints(comp, this.gridBagConstraints);
+		this.validate();
+	}
+}
