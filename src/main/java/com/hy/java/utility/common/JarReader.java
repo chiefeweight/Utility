@@ -13,7 +13,7 @@ import java.util.jar.JarFile;
  * <p>
  * 可以获取系统属性、jar文件中特定文件的内容、jar文件中所有文件的列表
  * 
- * @author 陈方伟
+ * @author chiefeweight
  */
 public class JarReader {
 	/**
