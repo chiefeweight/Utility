@@ -28,53 +28,58 @@ public class JarReader {
 	/**
 	 * 读取jar文件中特定文件的内容，以{@code byte[]}的形式返回
 	 *
-	 * @param jarFilePath
+	 * @param jar_file_path
 	 *            jar文件的路径
-	 * @param resourcePath
+	 * @param resource_path
 	 *            jar文件中要读取的特定文件的路径
 	 * @return 特定文件的内容，存在{@code byte[]}中
 	 */
-	public static byte[] readJARFile(String jarFilePath, String resourcePath) {// 读取JAR文件中单个文件的信息
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	public static byte[] readJARFile(String jar_file_path, String resource_path) {
+		// 读取JAR文件中单个文件的信息
+		ByteArrayOutputStream byte_array_output_stream = new ByteArrayOutputStream();
 		try {
-			JarFile jarFile = new JarFile(jarFilePath);// 根据传入的JAR文件创建JAR文件对象
-			JarEntry entry = jarFile.getJarEntry(resourcePath);// 获得JAR文件中的单个文件的JAR实体
-			InputStream inputStream = jarFile.getInputStream(entry);// 根据实体创建输入流
-			byte[] tempBytes = new byte[1024];
+			// 根据传入的JAR文件创建JAR文件对象
+			JarFile jar_file = new JarFile(jar_file_path);
+			// 获得JAR文件中的单个文件的JAR实体
+			JarEntry entry = jar_file.getJarEntry(resource_path);
+			// 根据实体创建输入流
+			InputStream input_stream = jar_file.getInputStream(entry);
+			byte[] temp_bytes = new byte[1024];
 			int length = 0;
-			while ((length = inputStream.read(tempBytes)) != -1) {
-				byteArrayOutputStream.write(tempBytes, 0, length);
+			while ((length = input_stream.read(temp_bytes)) != -1) {
+				byte_array_output_stream.write(temp_bytes, 0, length);
 			}
-			inputStream.close();
-			jarFile.close();// 关闭JAR文件对象流
+			input_stream.close();
+			jar_file.close();// 关闭JAR文件对象流
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return byteArrayOutputStream.toByteArray();
+		return byte_array_output_stream.toByteArray();
 	}
 
 	/**
 	 * 获取jar文件中所有文件的列表，以{@code ArrayList<String>}的形式返回
 	 *
-	 * @param jarFilePath
+	 * @param jar_file_path
 	 *            jar文件的路径
 	 * @return jarEntryList jar文件中所有文件的路径列表
 	 */
-	public static ArrayList<String> readJARList(String jarFilePath) {// 显示JAR文件内容列表
-		ArrayList<String> jarEntryList = new ArrayList<String>();
+	public static ArrayList<String> readJARList(String jar_file_path) {
+		// 显示JAR文件内容列表
+		ArrayList<String> jar_entry_list = new ArrayList<String>();
 		try {
-			JarFile jarFile = new JarFile(jarFilePath); // 创建JAR文件对象
-			Enumeration<JarEntry> en = jarFile.entries(); // 枚举获得JAR文件内的实体,即相对路径
-			while (en.hasMoreElements()) { // 遍历显示JAR文件中的内容信息
-				JarEntry entry = en.nextElement();
-				jarEntryList.add(entry.getName());// 保存文件名称
+			JarFile jar_file = new JarFile(jar_file_path); // 创建JAR文件对象
+			Enumeration<JarEntry> entries = jar_file.entries(); // 枚举获得JAR文件内的实体,即相对路径
+			while (entries.hasMoreElements()) { // 遍历显示JAR文件中的内容信息
+				JarEntry entry = entries.nextElement();
+				jar_entry_list.add(entry.getName());// 保存文件名称
 			}
-			jarFile.close();
+			jar_file.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return jarEntryList;
+		return jar_entry_list;
 	}
 }

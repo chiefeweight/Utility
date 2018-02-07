@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  * <p>
  * 方法介紹：
  * <ul>
- * <li><code>addComponent({@code Component} comp,{@code String} compObjName,{@code int} row, {@code int} column, {@code int} gridwidth, {@code int} gridheight, {@code double} weightx, {@code double} weighty)</code>：向panel中第<code>row</code>行第<code>column</code>列添加特定大小的<code>comp</code>；</li>
+ * <li><code>addComponent({@code Component} comp,{@code String} comp_obj_name,{@code int} row, {@code int} column, {@code int} gridwidth, {@code int} gridheight, {@code double} weightx, {@code double} weighty)</code>：向panel中第<code>row</code>行第<code>column</code>列添加特定大小的<code>comp</code>；</li>
  * </ul>
  * </p>
  * <p>
@@ -22,13 +22,14 @@ import javax.swing.JPanel;
  * 注：制作各个<code>comp</code>时，必须分别用其各自的setName()设置其在所属panel中的标识。
  * </ul>
  * </p>
+ * 
+ * @author chiefeweight
  */
 public class GridBagPanel extends JPanel {
 	/**
-	 * Specifies that this component is the next-to-last component in its column or
-	 * row (<code>gridwidth</code>, <code>gridheight</code>), or that this component
-	 * be placed next to the previously added component ( <code>gridx</code>,
-	 * <code>gridy</code>).
+	 * Specifies that this component is the next-to-last component in its column or row
+	 * (<code>gridwidth</code>, <code>gridheight</code>), or that this component be placed next to the
+	 * previously added component ( <code>gridx</code>, <code>gridy</code>).
 	 * 
 	 * @see java.awt.GridBagConstraints#gridwidth
 	 * @see java.awt.GridBagConstraints#gridheight
@@ -47,11 +48,11 @@ public class GridBagPanel extends JPanel {
 	/**
 	 * {@code GridBagPanel}的构造法。
 	 * 
-	 * @param panelObjName
+	 * @param panel_obj_name
 	 *            这个panel在其所属{@code CardFrame}中的标识。
 	 */
-	public GridBagPanel(String panelObjName) {
-		this.setName(panelObjName);
+	public GridBagPanel(String panel_obj_name) {
+		this.setName(panel_obj_name);
 		this.gridBagLayout = new GridBagLayout();
 		this.gridBagConstraints = new GridBagConstraints();
 		this.setLayout(this.gridBagLayout);
@@ -63,7 +64,7 @@ public class GridBagPanel extends JPanel {
 	 * 
 	 * @param comp
 	 *            组件
-	 * @param compObjName
+	 * @param comp_obj_name
 	 *            组件对象在其所属{@code GridBagPanel}中的标识（即名字），不是这个组件显示的文本
 	 * @param column
 	 *            组件所在行
@@ -84,8 +85,8 @@ public class GridBagPanel extends JPanel {
 	 * @see java.awt.GridBagConstraints#weightx
 	 * @see java.awt.GridBagConstraints#weighty
 	 */
-	public void addComponent(Component comp, String compObjName, int row, int column, int gridwidth, int gridheight, double weightx, double weighty) {
-		comp.setName(compObjName);
+	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty) {
+		comp.setName(comp_obj_name);
 		this.add(comp);
 		this.gridBagConstraints.gridy = row - 1;
 		this.gridBagConstraints.gridx = column - 1;

@@ -19,8 +19,8 @@ import javax.swing.WindowConstants;
  * <p>
  * 方法介紹：
  * <ul>
- * <li><code>addJMenu({@code JMenu} jMenu,{@code String} menuObjName,{@code int} index)</code>：向菜单栏中添加{@code JMenu}。</li>
- * <li><code>addGridBagPanel({@code GridBagPanel} gridBagPanel,{@code String} panelObjName)</code>：向
+ * <li><code>addJMenu({@code JMenu} jMenu,{@code String} menu_obj_name,{@code int} index)</code>：向菜单栏中添加{@code JMenu}。</li>
+ * <li><code>addGridBagPanel({@code GridBagPanel} gridBagPanel,{@code String} panel_obj_name)</code>：向
  * {@code JFrame}中添加{@code GridBagPanel}。</li>
  * <li><code>switchTo({@code Object} gridBagPanel)</code>：切换到目标gridBagPanel。</li>
  * <li><code>setDefaultClosing()</code>：设置默认关闭事件。</li>
@@ -37,6 +37,8 @@ import javax.swing.WindowConstants;
  * 注：1、制作各个菜单时，必须用{@code JMenu}和{@code JMenuItem}的setName()为每个项设置标识。2、用<code>switchTo()</code>管理不同Panel之间的切换。
  * </ul>
  * </p>
+ * 
+ * @author chiefeweight
  */
 public class CardFrame extends JFrame {
 	private static final long serialVersionUID = -6988198275877839529L;
@@ -94,13 +96,13 @@ public class CardFrame extends JFrame {
 	 * 
 	 * @param jMenu
 	 *            要添加的菜单
-	 * @param menuObjName
+	 * @param menu_obj_name
 	 *            所添加菜单在其所属{@code CardFrame}中的标识，不是这个菜单显示的文本。
 	 * @param index
 	 *            所添加菜单是从左数第几个。输入范围≥1。
 	 */
-	public void addJMenu(JMenu jMenu, String menuObjName, int index) {
-		this.jMenuBar_Main.add(jMenu, menuObjName, index - 1);
+	public void addJMenu(JMenu jMenu, String menu_obj_name, int index) {
+		this.jMenuBar_Main.add(jMenu, menu_obj_name, index - 1);
 	}
 
 	/**
@@ -108,11 +110,11 @@ public class CardFrame extends JFrame {
 	 * 
 	 * @param gridBagPanel
 	 *            要添加的<code>gridBagPanel</code>
-	 * @param panelObjName
+	 * @param panel_obj_name
 	 *            所添加gridBagPanel在其所属{@code CardFrame}中的标识，不是这个gridBagPanel显示的文本。
 	 */
-	public void addGridBagPanel(GridBagPanel gridBagPanel, String panelObjName) {
-		this.add(gridBagPanel, panelObjName);
+	public void addGridBagPanel(GridBagPanel gridBagPanel, String panel_obj_name) {
+		this.add(gridBagPanel, panel_obj_name);
 		this.validate();
 	}
 

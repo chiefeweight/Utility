@@ -28,7 +28,7 @@ public class FileEditor {
 	private BufferedReader buffered_reader;
 
 	/**
-	 * 构造新的{@code FileEditor}，可实现对filePath所指的文件读、写操作
+	 * 构造新的{@code FileEditor}，可实现对file_path所指的文件读、写操作
 	 * 
 	 * @param file_path
 	 *            目标文件路径。构造法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果没有目标文件路径中的目录，构造法会自动创建该目录

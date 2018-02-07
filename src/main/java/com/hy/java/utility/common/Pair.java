@@ -1,5 +1,10 @@
 package com.hy.java.utility.common;
 
+/**
+ * 一对对象
+ * 
+ * @author chiefeweight
+ */
 public class Pair<Type1, Type2> {
 	private Type1 left;
 	private Type2 right;

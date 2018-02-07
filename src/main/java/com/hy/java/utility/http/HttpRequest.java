@@ -21,8 +21,10 @@ import com.hy.java.utility.common.FileEditor;
 /**
  * 向目标url发送get请求，获取网页信息
  * <p>
- * 发送请求的方法有<code>getHtml({@code String} url,{@code String} saveClass)</code>、
- * <code>saveImage({@code String} url, {@code String} imgPath)</code>
+ * 发送请求的方法有<code>getHtml({@code String} url,{@code String} save_type)</code>、
+ * <code>saveImage({@code String} url, {@code String} img_path)</code>
+ * 
+ * @author chiefeweight
  */
 public class HttpRequest {
 	/**
@@ -30,48 +32,48 @@ public class HttpRequest {
 	 * 
 	 * @param url
 	 *            目标url
-	 * @param saveClass
+	 * @param save_type
 	 *            将html保存到的类型，只支持{@code Document}、{@code JSONObject}、 {@code String}
-	 * @return html 已向之发送请求的url的html信息，保存类型为saveClass
+	 * @return html 已向之发送请求的url的html信息，保存类型为save_type
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getHtml(String url, String saveClass) {
+	public static <T> T getHtml(String url, String save_type) {
 		String html = "";
 		try {
-			URL realURL = new URL(url);
-			URLConnection urlConnection = realURL.openConnection();
+			URL real_URL = new URL(url);
+			URLConnection urlConnection = real_URL.openConnection();
 			// 设置请求属性，然后开始connect
 			urlConnection.setRequestProperty("Connection", "Keep-Alive");
 			urlConnection.setRequestProperty("Accept-Encoding", "*");
 			urlConnection.connect();
-			// 获得urlConnection上所有头信息，解析网页的编码
-			Map<String, List<String>> headerFieldsMap = urlConnection.getHeaderFields();
+			// 获得url_connection上所有头信息，解析网页的编码
+			Map<String, List<String>> header_fields_map = urlConnection.getHeaderFields();
 			String charset = null;
-			if (!headerFieldsMap.isEmpty()) {
-				if (!headerFieldsMap.get("Content-Type").isEmpty()) {
-					if (headerFieldsMap.get("Content-Type").get(0).contains(";")) {
-						if (headerFieldsMap.get("Content-Type").get(0).split(";").length > 1) {
-							if (headerFieldsMap.get("Content-Type").get(0).split(";")[1].contains("=")) {
-								charset = headerFieldsMap.get("Content-Type").get(0).split(";")[1].split("=")[1];
+			if (!header_fields_map.isEmpty()) {
+				if (!header_fields_map.get("Content-Type").isEmpty()) {
+					if (header_fields_map.get("Content-Type").get(0).contains(";")) {
+						if (header_fields_map.get("Content-Type").get(0).split(";").length > 1) {
+							if (header_fields_map.get("Content-Type").get(0).split(";")[1].contains("=")) {
+								charset = header_fields_map.get("Content-Type").get(0).split(";")[1].split("=")[1];
 							}
 						}
 					}
 				}
 			}
-			// 将urlConnection的信息保存到html里
-			InputStream urlInputStream = urlConnection.getInputStream();
-			InputStreamReader urlInputStreamReader = null;
+			// 将url_connection的信息保存到html里
+			InputStream url_InputStream = urlConnection.getInputStream();
+			InputStreamReader url_InputStreamReader = null;
 			if (charset != null) {
-				urlInputStreamReader = new InputStreamReader(urlInputStream, charset);// 注意此处的编码
+				url_InputStreamReader = new InputStreamReader(url_InputStream, charset);// 注意此处的编码
 			} else {
-				urlInputStreamReader = new InputStreamReader(urlInputStream);
+				url_InputStreamReader = new InputStreamReader(url_InputStream);
 			}
-			BufferedReader urlConnectionReader = new BufferedReader(urlInputStreamReader);
-			String tempString = null;
-			while ((tempString = urlConnectionReader.readLine()) != null) {
-				html += tempString;
+			BufferedReader url_connection_reader = new BufferedReader(url_InputStreamReader);
+			String temp_string = null;
+			while ((temp_string = url_connection_reader.readLine()) != null) {
+				html += temp_string;
 			}
-			urlConnectionReader.close();
+			url_connection_reader.close();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,9 +84,9 @@ public class HttpRequest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (saveClass.equals("Document")) {
+		if (save_type.equals("Document")) {
 			return (T) Jsoup.parse(html);
-		} else if (saveClass.equals("JSONObject")) {
+		} else if (save_type.equals("JSONObject")) {
 			return (T) JSONObject.fromObject(html);
 		} else {
 			return (T) html;
@@ -96,19 +98,19 @@ public class HttpRequest {
 	 * 
 	 * @param url
 	 *            目标url
-	 * @param imgPath
+	 * @param img_path
 	 *            保存图片文件的路径
 	 */
-	public static void saveImage(String url, String imgPath) {
+	public static void saveImage(String url, String img_path) {
 		try {
-			URL realURL = new URL(url);
-			URLConnection urlConnection = realURL.openConnection();
+			URL real_URL = new URL(url);
+			URLConnection urlConnection = real_URL.openConnection();
 			// 设置请求属性，然后开始connect
 			urlConnection.setRequestProperty("Connection", "Keep-Alive");
 			urlConnection.setRequestProperty("Accept-Encoding", "*");
 			urlConnection.connect();
 			InputStream inputStream = urlConnection.getInputStream();
-			FileEditor fileEditor = new FileEditor(imgPath);
+			FileEditor fileEditor = new FileEditor(img_path);
 			fileEditor.write(inputStream, false);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
