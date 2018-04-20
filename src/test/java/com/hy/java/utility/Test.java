@@ -4,11 +4,27 @@ import java.awt.Dialog;
 
 import javax.swing.JFrame;
 
+import com.hy.java.utility.common.FileEditor;
 import com.hy.java.utility.frame.CardFrame;
+import com.hy.java.utility.math.NormalDistribution;
 
 public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		// frame_test();
+		num_test();
+	}
+
+	private static void num_test() {
+		// TODO Auto-generated method stub
+		FileEditor f = new FileEditor("F:\\1.txt");
+		NormalDistribution n = new NormalDistribution(10, 25000000, null);
+		for (int i = 0; i < 1000; i++) {
+			f.write(Double.toString(n.nextRandom()) + "\n", true);
+		}
+	}
+
+	private static void frame_test() {
 		CardFrame cf = new CardFrame("Test", 500, 500);
 
 		JFrame temp_cf = new JFrame("Test1");
@@ -18,6 +34,5 @@ public class Test {
 		Dialog d = new Dialog(cf);
 		cf.setAbout(d);
 		d.setSize(300, 300);
-
 	}
 }

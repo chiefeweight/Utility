@@ -32,4 +32,8 @@ public class Pair<Type1, Type2> {
 	public void setRight(Type2 right) {
 		this.right = right;
 	}
+
+	public static <Type1, Type2> Pair<Type1, Type2> createPair(Type1 left, Type2 right) {
+		return new Pair<Type1, Type2>(left, right);
+	}
 }
