@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  * <p>
  * 操作步驟：
  * <ul>
- * <li>1、制作各个<code>comp</code>（如{@code JMenu}、{@code JMenuItem}、{@code TextField}、{@code JButton}等）。</li>
+ * <li>1、制作各个<code>comp</code>（如{@code JMenu}、{@code JMenuItem}、{@code JButton}、{@code JList}、{@code TextArea}、{@code TextField}、{@code JComboBox}等）。</li>
  * <li>2、用<code>addComponent()</code>把制作好的各个comp添加到panel中。</li> <br />
  * 注：制作各个<code>comp</code>时，必须分别用其各自的setName()设置其在所属panel中的标识。
  * </ul>
