@@ -42,8 +42,8 @@ public class GridBagPanel extends JPanel {
 	 */
 	public static final int REMAINDER = 0;
 	private static final long serialVersionUID = -6984508425312677255L;
-	private GridBagLayout gridBagLayout;
-	private GridBagConstraints gridBagConstraints;
+	private GridBagLayout grid_bag_layout;
+	private GridBagConstraints grid_bag_constraints;
 
 	/**
 	 * {@code GridBagPanel}的构造法。
@@ -53,10 +53,10 @@ public class GridBagPanel extends JPanel {
 	 */
 	public GridBagPanel(String panel_obj_name) {
 		this.setName(panel_obj_name);
-		this.gridBagLayout = new GridBagLayout();
-		this.setLayout(this.gridBagLayout);
-		this.gridBagConstraints = new GridBagConstraints();
-		this.gridBagConstraints.fill = GridBagConstraints.BOTH;
+		this.grid_bag_layout = new GridBagLayout();
+		this.setLayout(this.grid_bag_layout);
+		this.grid_bag_constraints = new GridBagConstraints();
+		this.grid_bag_constraints.fill = GridBagConstraints.BOTH;
 	}
 
 	/**
@@ -88,13 +88,13 @@ public class GridBagPanel extends JPanel {
 	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty) {
 		comp.setName(comp_obj_name);
 		this.add(comp);
-		this.gridBagConstraints.gridy = row - 1;
-		this.gridBagConstraints.gridx = column - 1;
-		this.gridBagConstraints.gridwidth = gridwidth;
-		this.gridBagConstraints.gridheight = gridheight;
-		this.gridBagConstraints.weightx = weightx;
-		this.gridBagConstraints.weighty = weighty;
-		this.gridBagLayout.setConstraints(comp, this.gridBagConstraints);
+		this.grid_bag_constraints.gridy = row - 1;
+		this.grid_bag_constraints.gridx = column - 1;
+		this.grid_bag_constraints.gridwidth = gridwidth;
+		this.grid_bag_constraints.gridheight = gridheight;
+		this.grid_bag_constraints.weightx = weightx;
+		this.grid_bag_constraints.weighty = weighty;
+		this.grid_bag_layout.setConstraints(comp, this.grid_bag_constraints);
 		this.validate();
 	}
 }
