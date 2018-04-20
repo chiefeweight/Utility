@@ -42,8 +42,8 @@ public class GridBagPanel extends JPanel {
 	 */
 	public static final int REMAINDER = 0;
 	private static final long serialVersionUID = -6984508425312677255L;
-	private GridBagConstraints gridBagConstraints;
 	private GridBagLayout gridBagLayout;
+	private GridBagConstraints gridBagConstraints;
 
 	/**
 	 * {@code GridBagPanel}的构造法。
@@ -54,8 +54,8 @@ public class GridBagPanel extends JPanel {
 	public GridBagPanel(String panel_obj_name) {
 		this.setName(panel_obj_name);
 		this.gridBagLayout = new GridBagLayout();
-		this.gridBagConstraints = new GridBagConstraints();
 		this.setLayout(this.gridBagLayout);
+		this.gridBagConstraints = new GridBagConstraints();
 		this.gridBagConstraints.fill = GridBagConstraints.BOTH;
 	}
 
@@ -66,18 +66,18 @@ public class GridBagPanel extends JPanel {
 	 *            组件
 	 * @param comp_obj_name
 	 *            组件对象在其所属{@code GridBagPanel}中的标识（即名字），不是这个组件显示的文本
-	 * @param column
-	 *            组件所在行
 	 * @param row
+	 *            组件所在行
+	 * @param column
 	 *            组件所在列
 	 * @param gridwidth
 	 *            组件宽度占的格子数
 	 * @param gridheight
 	 *            组件高度占的格子数
 	 * @param weightx
-	 *            The weightx value
+	 *            组件横向额外占的格子数，默认是0
 	 * @param weighty
-	 *            The weighty value
+	 *            组件纵向额外占的格子数，默认是0
 	 * @see java.awt.GridBagConstraints#gridy
 	 * @see java.awt.GridBagConstraints#gridx
 	 * @see java.awt.GridBagConstraints#gridwidth

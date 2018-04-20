@@ -29,7 +29,7 @@ public class AppTest extends TestCase {
 	 * Rigourous Test :-)
 	 */
 	public void testApp() {
-		// 可以添加各种测试
+		// 在这里添加各种测试
 		assertTrue(true);
 	}
 }

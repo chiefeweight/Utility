@@ -3,7 +3,9 @@ package com.hy.java.utility.frame;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -23,7 +25,6 @@ import javax.swing.WindowConstants;
  * <li><code>addGridBagPanel({@code GridBagPanel} gridBagPanel,{@code String} panel_obj_name)</code>：向
  * {@code JFrame}中添加{@code GridBagPanel}。</li>
  * <li><code>switchTo({@code Object} gridBagPanel)</code>：切换到目标gridBagPanel。</li>
- * <li><code>setDefaultClosing()</code>：设置默认关闭事件。</li>
  * </ul>
  * </p>
  * <p>
@@ -31,8 +32,9 @@ import javax.swing.WindowConstants;
  * <ul>
  * <li>1、制作各个菜单（使用{@code JMenu}和{@code JMenuItem}），然后用<code>addJMenu()</code>把制作好的菜单添加到菜单栏中。</li>
  * <li>2、制作各个Panel（使用{@code GridBagPanel}），然后用<code>addGridBagPanel()</code>把制作好的各个Panel添加到整个窗口容器中。</li>
- * <li>3、用<code>setHelp()</code>和<code>setAbout()</code>为两个菜单项设置动作，完成Help和About菜单项的制作。</li>
- * <li>4、用<code>addWindowListener()</code>添加关闭响应。如果没有事做，则可以调用<code>setDefaultClosing()</code>。</li>
+ * <li>3、用<code>setHelp()</code>和<code>setAbout()</code>为两个菜单项设置响应面板，完成Help和About菜单项的制作。</li>
+ * <li>4、如需响应关闭事件，则先调用<code>setDefaultCloseOperation()</code>改变关闭操作，然后用<br>
+ * <code>addWindowListener(new {@code WindowAdapter}(){public void windowClosing(WindowEvent we) {}})</code>添加关闭响应。</li>
  * <br />
  * 注：1、制作各个菜单时，必须用{@code JMenu}和{@code JMenuItem}的setName()为每个项设置标识。2、用<code>switchTo()</code>管理不同Panel之间的切换。
  * </ul>
@@ -41,16 +43,17 @@ import javax.swing.WindowConstants;
  * @author chiefeweight
  */
 public class CardFrame extends JFrame {
-	private static final long serialVersionUID = -6988198275877839529L;
-	private static final int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width;
-	private static final int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	public static final int default_width = screen_width / 2;
-	public static final int default_height = screen_height / 2;
-	private final CardLayout cardLayout;
-	private final JMenuBar jMenuBar_Main;
-	private final JMenu jMenu_Help;
-	private final JMenuItem jMenuItem_About;
-	private final JMenuItem jMenuItem_HelpContents;
+	public static final int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width;
+	public static final int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height;
+	/**
+	 * generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -4754225216291161975L;
+	private CardLayout card_layout;
+	private JMenuBar menubar;
+	private JMenu help_menu;
+	private JMenuItem help_menu_item_Help_Contents;
+	private JMenuItem help_menu_item_About;
 
 	/**
 	 * {@code CardFrame}的构造法。
@@ -59,36 +62,36 @@ public class CardFrame extends JFrame {
 	 */
 	public CardFrame(String title, int width, int height) {
 		/* 初始化窗口 */
-		this.cardLayout = new CardLayout();
 		this.initFrame(title, width, height);
 		/* 初始化菜单栏 */
-		this.jMenuBar_Main = new JMenuBar();
-		this.jMenuBar_Main.setName("JMenuBar_Main");
-		this.jMenu_Help = new JMenu("Help");
-		this.jMenu_Help.setName("JMenu_Help");
-		this.jMenuItem_HelpContents = new JMenuItem("Help Contents");
-		this.jMenuItem_HelpContents.setName("Help Contents");
-		this.jMenuItem_About = new JMenuItem("About " + title);
-		this.jMenuItem_About.setName("About");
-		this.initJMenuBar();
+		this.initJMenuBar(title);
 		/* 最后设置可见 */
 		this.setVisible(true);
 	}
 
 	private void initFrame(String title, int width, int height) {
-		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setTitle(title);
 		this.setSize(width, height);
 		this.setLocation((CardFrame.screen_width - width) / 2, (CardFrame.screen_height - height) / 2);
-		this.setLayout(this.cardLayout);
+		this.card_layout = new CardLayout();
+		this.setLayout(this.card_layout);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
-	private void initJMenuBar() {
-		this.jMenu_Help.add(this.jMenuItem_HelpContents, 0);
-		this.jMenu_Help.addSeparator();
-		this.jMenu_Help.add(this.jMenuItem_About, -1);
-		this.addJMenu(this.jMenu_Help, this.jMenu_Help.getName(), 0);
-		this.setJMenuBar(this.jMenuBar_Main);
+	private void initJMenuBar(String title) {
+		this.menubar = new JMenuBar();
+		this.menubar.setName("menubar");
+		this.setJMenuBar(this.menubar);
+		this.help_menu = new JMenu("Help");
+		this.help_menu.setName("help_menu");
+		this.addJMenu(this.help_menu, this.help_menu.getName(), 0);
+		this.help_menu_item_Help_Contents = new JMenuItem("Help Contents");
+		this.help_menu_item_Help_Contents.setName("help_menu_item_Help_Contents");
+		this.help_menu.add(this.help_menu_item_Help_Contents, 0);
+		this.help_menu.addSeparator();
+		this.help_menu_item_About = new JMenuItem("About " + title);
+		this.help_menu_item_About.setName("help_menu_item_About");
+		this.help_menu.add(this.help_menu_item_About, -1);
 	}
 
 	/**
@@ -102,7 +105,7 @@ public class CardFrame extends JFrame {
 	 *            所添加菜单是从左数第几个。输入范围≥1。
 	 */
 	public void addJMenu(JMenu jMenu, String menu_obj_name, int index) {
-		this.jMenuBar_Main.add(jMenu, menu_obj_name, index - 1);
+		this.menubar.add(jMenu, menu_obj_name, index - 1);
 	}
 
 	/**
@@ -118,12 +121,31 @@ public class CardFrame extends JFrame {
 		this.validate();
 	}
 
-	public void setHelp(ActionListener l) {
-		this.jMenuItem_HelpContents.addActionListener(l);
+	public void setHelpContents(final JFrame frame) {
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.help_menu_item_Help_Contents.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				frame.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - frame.getWidth()) / 2, CardFrame.this.getY() + (CardFrame.this.getHeight() - frame.getHeight()) / 2);
+				frame.setVisible(true);
+			}
+		});
 	}
 
-	public void setAbout(ActionListener l) {
-		this.jMenuItem_About.addActionListener(l);
+	public void setAbout(final Dialog dialog) {
+		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		dialog.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				dialog.dispose();
+			}
+		});
+		this.help_menu_item_About.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dialog.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - dialog.getWidth()) / 2, CardFrame.this.getY() + (CardFrame.this.getHeight() - dialog.getHeight()) / 2);
+				dialog.setVisible(true);
+			}
+		});
 	}
 
 	/**
@@ -135,20 +157,9 @@ public class CardFrame extends JFrame {
 	public void switchTo(Object gridBagPanel) {
 		Container contentPane = this.getContentPane();
 		if (gridBagPanel instanceof String) {
-			this.cardLayout.show(contentPane, (String) gridBagPanel);
+			this.card_layout.show(contentPane, (String) gridBagPanel);
 		} else if (gridBagPanel instanceof GridBagPanel) {
-			this.cardLayout.show(contentPane, contentPane.getComponent(contentPane.getComponentZOrder((Component) gridBagPanel)).getName());
+			this.card_layout.show(contentPane, contentPane.getComponent(contentPane.getComponentZOrder((Component) gridBagPanel)).getName());
 		}
-	}
-
-	/**
-	 * 设置默认关闭事件
-	 */
-	public void setDefaultClosing() {
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				System.exit(0);
-			}
-		});
 	}
 }
