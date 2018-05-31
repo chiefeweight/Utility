@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 public class Traverser {
-	public List<String> traverseFolder(String path, List<String> result) {
+	public static List<String> traverseFolder(String path, List<String> result) {
 		File rootFile = new File(path);
 		if (rootFile.exists()) {
 			if (rootFile.isDirectory()) {

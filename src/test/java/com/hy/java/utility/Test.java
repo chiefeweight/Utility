@@ -1,10 +1,15 @@
 package com.hy.java.utility;
 
 import java.awt.Dialog;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import com.hy.java.utility.common.FileEditor;
+import com.hy.java.utility.common.Traverser;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.math.NormalDistribution;
 
@@ -12,7 +17,19 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// frame_test();
-		num_test();
+		// num_test();
+		file_test();
+	}
+
+	private static void file_test() {
+		long time = System.currentTimeMillis();
+		List<String> t = new ArrayList<>();
+		Traverser.traverseFolder("G:\\1\\", t);
+		for (String s : t) {
+			FileEditor f = new FileEditor(s);
+			System.out.println(f.readFileToString());
+		}
+		System.out.println(System.currentTimeMillis() - time);
 	}
 
 	private static void num_test() {
