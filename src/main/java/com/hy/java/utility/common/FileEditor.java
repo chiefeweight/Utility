@@ -53,25 +53,8 @@ public class FileEditor {
 	public byte[] readFileToBytes() {
 		byte[] file_content_bytes = null;
 		if (this.file.exists()) {
-			try {
-				FileInputStream file_input_stream = new FileInputStream(this.file);
-				ByteArrayOutputStream byte_array_output_stream = new ByteArrayOutputStream();
-				byte[] temp_bytes = new byte[1024];
-				int length = -1;
-				// 读取inputStream，存到bytes里。如果返回的读取长度为-1，代表全部读取完毕
-				while ((length = file_input_stream.read(temp_bytes)) != -1) {
-					// 把bytes写到byte_array_output_stream中，中间参数代表要写的bytes起始位置，length代表要写的长度
-					byte_array_output_stream.write(temp_bytes, 0, length);
-				}
-				file_input_stream.close();
-				file_content_bytes = byte_array_output_stream.toByteArray();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ByteArrayOutputStream byte_array_output_stream = readFile();
+			file_content_bytes = byte_array_output_stream.toByteArray();
 		} else {
 			System.out.println("File doesn't exist.");
 		}
@@ -81,34 +64,40 @@ public class FileEditor {
 	/**
 	 * 读取文件的所有内容
 	 * 
-	 * @return file_content_bytes 文件所有内容，以{@code String}的形式返回
+	 * @return file_content_string 文件所有内容，以{@code String}的形式返回
 	 */
 	public String readFileToString() {
 		String file_content_string = null;
 		if (this.file.exists()) {
-			try {
-				FileInputStream file_input_stream = new FileInputStream(this.file);
-				ByteArrayOutputStream byte_array_output_stream = new ByteArrayOutputStream();
-				byte[] temp_bytes = new byte[1024];
-				int length = -1;
-				// 读取inputStream，存到bytes里。如果返回的读取长度为-1，代表全部读取完毕
-				while ((length = file_input_stream.read(temp_bytes)) != -1) {
-					// 把bytes写到byte_array_output_stream中，中间参数代表要写的bytes起始位置，length代表要写的长度
-					byte_array_output_stream.write(temp_bytes, 0, length);
-				}
-				file_input_stream.close();
-				file_content_string = byte_array_output_stream.toString();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ByteArrayOutputStream byte_array_output_stream = readFile();
+			file_content_string = byte_array_output_stream.toString();
 		} else {
 			System.out.println("File doesn't exist.");
 		}
 		return file_content_string;
+	}
+
+	private ByteArrayOutputStream readFile() {
+		// TODO Auto-generated method stub
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		try {
+			FileInputStream file_input_stream = new FileInputStream(this.file);
+			byte[] temp_bytes = new byte[1024];
+			int length = -1;
+			// 读取inputStream，存到bytes里。如果返回的读取长度为-1，代表全部读取完毕
+			while ((length = file_input_stream.read(temp_bytes)) != -1) {
+				// 把bytes写到byte_array_output_stream中，中间参数代表要写的bytes起始位置，length代表要写的长度
+				result.write(temp_bytes, 0, length);
+			}
+			file_input_stream.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	/**

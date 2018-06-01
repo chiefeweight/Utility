@@ -24,14 +24,7 @@ public class Test {
 		Traverser.traverseFolder("G:\\1\\", t);
 		for (String s : t) {
 			FileEditor f = new FileEditor(s);
-			String line = null;
-			while ((line = f.readLine()) != null) {
-				System.out.println(line);
-			}
-			f.resetReader();
-			while ((line = f.readLine()) != null) {
-				System.out.println(line);
-			}
+			System.out.println(f.readFileToString());
 		}
 	}
 
