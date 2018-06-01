@@ -6,35 +6,19 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import org.junit.Test;
+
 import com.hy.java.utility.common.FileEditor;
+import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.common.Traverser;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.math.NormalDistribution;
 
-public class Test {
+public class Tests {
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		// frame_test();
-		// num_test();
-		file_test();
-	}
-
-	private static void file_test() {
-		List<String> t = new ArrayList<>();
-		Traverser.traverseFolder("G:\\1\\", t);
-		for (String s : t) {
-			FileEditor f = new FileEditor(s);
-			System.out.println(f.readFileToString());
-		}
-	}
-
-	private static void num_test() {
-		// TODO Auto-generated method stub
-		FileEditor f = new FileEditor("F:\\1.txt");
-		NormalDistribution n = new NormalDistribution(10, 25000000, null);
-		for (int i = 0; i < 1000; i++) {
-			f.write(Double.toString(n.nextRandom()) + "\n", true);
-		}
+		frame_test();
 	}
 
 	private static void frame_test() {
@@ -47,5 +31,31 @@ public class Test {
 		Dialog d = new Dialog(cf);
 		cf.setAbout(d);
 		d.setSize(300, 300);
+	}
+
+	@Test
+	public void time_test() {
+		// TODO Auto-generated method stub
+		System.out.println(SystemTime.getCurrentTime());
+	}
+
+	@Test
+	public void file_test() {
+		List<String> t = new ArrayList<>();
+		Traverser.traverseFolder("G:\\1\\", t);
+		for (String s : t) {
+			FileEditor f = new FileEditor(s);
+			System.out.println(f.readFileToString());
+		}
+	}
+
+	@Test
+	public void num_test() {
+		// TODO Auto-generated method stub
+		FileEditor f = new FileEditor("F:\\1.txt");
+		NormalDistribution n = new NormalDistribution(10, 25000000, null);
+		for (int i = 0; i < 1000; i++) {
+			f.write(Double.toString(n.nextRandom()) + "\n", true);
+		}
 	}
 }
