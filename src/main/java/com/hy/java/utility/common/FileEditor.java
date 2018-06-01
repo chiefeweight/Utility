@@ -9,15 +9,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.ByteChannel;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.util.Base64;
-
-import javax.rmi.CORBA.Util;
 
 /**
  * 用于编辑File，可以实现读、写任意数据的操作

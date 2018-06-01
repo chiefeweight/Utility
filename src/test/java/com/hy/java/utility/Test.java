@@ -1,8 +1,6 @@
 package com.hy.java.utility;
 
 import java.awt.Dialog;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +20,19 @@ public class Test {
 	}
 
 	private static void file_test() {
-		long time = System.currentTimeMillis();
 		List<String> t = new ArrayList<>();
 		Traverser.traverseFolder("G:\\1\\", t);
 		for (String s : t) {
 			FileEditor f = new FileEditor(s);
-			System.out.println(f.readFileToString());
+			String line = null;
+			while ((line = f.readLine()) != null) {
+				System.out.println(line);
+			}
+			f.resetReader();
+			while ((line = f.readLine()) != null) {
+				System.out.println(line);
+			}
 		}
-		System.out.println(System.currentTimeMillis() - time);
 	}
 
 	private static void num_test() {
