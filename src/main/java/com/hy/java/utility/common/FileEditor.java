@@ -31,7 +31,7 @@ public class FileEditor {
 	 * 构造新的{@code FileEditor}，可实现对file_path所指文件的读、写操作
 	 * 
 	 * @param file_path
-	 *            目标文件路径。构造法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果没有目标文件路径中的目录，构造法会自动创建该目录
+	 *            目标文件路径。构造法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public FileEditor(String file_path) {
 		resetFile(file_path);
@@ -41,7 +41,7 @@ public class FileEditor {
 	 * 构造新的{@code FileEditor}，可实现对file所指文件的读、写操作
 	 * 
 	 * @param file
-	 *            目标文件。如果没有目标文件路径中的目录，构造法会自动创建该目录
+	 *            目标文件。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public FileEditor(File file) {
 		resetFile(file);
@@ -51,7 +51,7 @@ public class FileEditor {
 	 * 重置文件
 	 * 
 	 * @param file_path
-	 *            新文件路径。该方法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果没有新文件路径中的目录，该方法会自动创建该目录
+	 *            文件路径。该方法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public void resetFile(String file_path) {
 		file_path = file_path.replaceAll("\\*", "_").replaceAll("\\?", "_").replaceAll("<", "_").replaceAll(">", "_");
@@ -63,7 +63,7 @@ public class FileEditor {
 	 * 重置文件
 	 * 
 	 * @param file
-	 *            新文件。如果没有新文件路径中的目录，该方法会自动创建该目录
+	 *            文件。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public void resetFile(File file) {
 		this.file = file;
