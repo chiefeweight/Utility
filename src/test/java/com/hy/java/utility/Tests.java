@@ -36,27 +36,27 @@ public class Tests {
 		/*
 		 * panel
 		 */
-		GridBagPanel panel = new GridBagPanel("panel");
+		GridBagPanel panel = new GridBagPanel("main_panel");
 		card_frame.addGridBagPanel(panel, panel.getName());
 		/*
 		 * panel内容
 		 */
-		TextArea ta = new TextArea();
-		ta.setName("ta");
-		panel.addComponent(ta, ta.getName(), 1, 1, 1, 1, 1, 1);
+		TextArea main_text_area = new TextArea();
+		main_text_area.setName("main_text_area");
+		panel.addComponent(main_text_area, main_text_area.getName(), 1, 1, 1, 1, 0, 0);
 		// 创建一个线程池
 		long start_time = SystemTime.currentTimeMillis();
-		ta.append("程序开始运行于" + SystemTime.formatTime(start_time) + "\n");
-		int taskSize = 5;
-		ExecutorService pool = Executors.newFixedThreadPool(taskSize);
+		main_text_area.append("世界于" + SystemTime.formatTime(start_time) + "开始运行\n");
+		int task_size = 5;
+		ExecutorService pool = Executors.newFixedThreadPool(task_size);
 		// ScheduledExecutorService pool1 = Executors.newScheduledThreadPool(taskSize);
 		// 创建多个有返回值的任务
-		List<FutureTask<String>> list = new ArrayList<>();
-		for (int i = 0; i < taskSize; i++) {
-			Callable<String> c = new MyCallable(i + " ", panel);
-			FutureTask<String> futureTask = new FutureTask<>(c);
-			list.add(futureTask);
-			pool.submit(futureTask);
+		List<FutureTask<String>> task_list = new ArrayList<>();
+		for (int i = 0; i < task_size; i++) {
+			Callable<String> c = new SampleUnit(i + " ", panel, main_text_area.getName());
+			FutureTask<String> future_task = new FutureTask<>(c);
+			task_list.add(future_task);
+			pool.submit(future_task);
 			try {
 				Thread.sleep(1000 * 1);
 			} catch (InterruptedException e) {
@@ -68,11 +68,11 @@ public class Tests {
 		// 关闭线程池
 		pool.shutdown();
 		// 获取所有并发任务的运行结果
-		for (FutureTask<String> f : list) {
+		for (FutureTask<String> f : task_list) {
 			// 从Future对象上获取任务的返回值，并输出到控制台
 			try {
 				String result = f.get();
-				ta.append(result + "\n");
+				main_text_area.append(result + "\n");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -82,7 +82,7 @@ public class Tests {
 			}
 		}
 		long end_time = SystemTime.currentTimeMillis();
-		ta.append("程序结束运行于" + SystemTime.formatTime(end_time) + "，运行时间" + (end_time - start_time) + "毫秒\n");
+		main_text_area.append("世界于" + SystemTime.formatTime(end_time) + "结束运行，运行时间" + (end_time - start_time) + "毫秒\n");
 		/*
 		 * help
 		 */
@@ -98,25 +98,27 @@ public class Tests {
 		about_dialog.setSize(200, 200);
 	}
 
-	class MyCallable implements Callable<String> {
-		private String taskNum;
+	class SampleUnit implements Callable<String> {
+		private String task_index;
 		private GridBagPanel panel;
+		private String name;
 
-		MyCallable(String taskNum, GridBagPanel panel) {
-			this.taskNum = taskNum;
+		SampleUnit(String task_index, GridBagPanel panel, String name) {
+			this.task_index = task_index;
 			this.panel = panel;
+			this.name = name;
 		}
 
 		@Override
 		public String call() throws Exception {
 			// TODO Auto-generated method stub
-			TextArea ta = (TextArea) this.panel.getComponent("ta");
+			TextArea ta = (TextArea) this.panel.getComponent(this.name);
 			long start_time = SystemTime.currentTimeMillis();
-			ta.append(taskNum + "于" + SystemTime.formatTime(start_time) + "启动\n");
+			ta.append("任务" + task_index + "于" + SystemTime.formatTime(start_time) + "启动\n");
 			Thread.sleep(1000 * 3);
 			long end_time = SystemTime.currentTimeMillis();
-			ta.append("\t\t\t\t" + taskNum + "于" + SystemTime.formatTime(end_time) + "终止\n");
-			return taskNum + "任务返回运行结果,执行时间为" + (end_time - start_time) + "毫秒";
+			ta.append("\t\t\t\t" + "任务" + task_index + "于" + SystemTime.formatTime(end_time) + "终止\n");
+			return "任务" + task_index + "返回运行结果，执行时间为" + (end_time - start_time) + "毫秒";
 		}
 	}
 
