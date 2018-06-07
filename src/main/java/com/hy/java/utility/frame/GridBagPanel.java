@@ -3,6 +3,8 @@ package com.hy.java.utility.frame;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -44,6 +46,7 @@ public class GridBagPanel extends JPanel {
 	private static final long serialVersionUID = -6984508425312677255L;
 	private GridBagLayout grid_bag_layout;
 	private GridBagConstraints grid_bag_constraints;
+	private Map<String, Component> component_map;
 
 	/**
 	 * {@code GridBagPanel}的构造法。
@@ -57,6 +60,7 @@ public class GridBagPanel extends JPanel {
 		this.setLayout(this.grid_bag_layout);
 		this.grid_bag_constraints = new GridBagConstraints();
 		this.grid_bag_constraints.fill = GridBagConstraints.BOTH;
+		this.component_map = new HashMap<>();
 	}
 
 	/**
@@ -86,15 +90,36 @@ public class GridBagPanel extends JPanel {
 	 * @see java.awt.GridBagConstraints#weighty
 	 */
 	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty) {
-		comp.setName(comp_obj_name);
-		this.add(comp);
-		this.grid_bag_constraints.gridy = row - 1;
-		this.grid_bag_constraints.gridx = column - 1;
-		this.grid_bag_constraints.gridwidth = gridwidth;
-		this.grid_bag_constraints.gridheight = gridheight;
-		this.grid_bag_constraints.weightx = weightx;
-		this.grid_bag_constraints.weighty = weighty;
-		this.grid_bag_layout.setConstraints(comp, this.grid_bag_constraints);
-		this.validate();
+		if (!this.component_map.containsKey(comp_obj_name)) {
+			comp.setName(comp_obj_name);
+			this.add(comp);
+			this.grid_bag_constraints.gridy = row - 1;
+			this.grid_bag_constraints.gridx = column - 1;
+			this.grid_bag_constraints.gridwidth = gridwidth;
+			this.grid_bag_constraints.gridheight = gridheight;
+			this.grid_bag_constraints.weightx = weightx;
+			this.grid_bag_constraints.weighty = weighty;
+			this.grid_bag_layout.setConstraints(comp, this.grid_bag_constraints);
+			this.component_map.put(comp.getName(), comp);
+			this.validate();
+		} else {
+			System.out.println(comp_obj_name + "已存在，该组件添加失败。请给组件对象重起comp_obj_name");
+		}
+
+	}
+
+	/**
+	 * 根据comp_obj_name，返回组件
+	 * 
+	 * @param comp_obj_name
+	 *            组件的comp_obj_name
+	 * @return 组件。如果该{@code GridBagPanel}中不包含comp_obj_name，则返回{@code null}
+	 */
+	public Component getComponent(String comp_obj_name) {
+		Component result = null;
+		if (this.component_map.containsKey(comp_obj_name)) {
+			result = this.component_map.get(comp_obj_name);
+		}
+		return result;
 	}
 }

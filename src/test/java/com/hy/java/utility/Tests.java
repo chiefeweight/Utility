@@ -2,8 +2,14 @@ package com.hy.java.utility;
 
 import java.awt.Dialog;
 import java.awt.Graphics;
+import java.awt.TextArea;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 import javax.swing.JFrame;
 
@@ -21,7 +27,97 @@ public class Tests {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Tests t = new Tests();
-		t.frame_test(-10.0, 5555.0, 5000000);
+		// t.frame_test(-10.0, 5555.0, 5000000);
+		t.world_frame();
+	}
+
+	private void world_frame() {
+		CardFrame card_frame = new CardFrame("World", 800, 600);
+		/*
+		 * panel
+		 */
+		GridBagPanel panel = new GridBagPanel("panel");
+		card_frame.addGridBagPanel(panel, panel.getName());
+		/*
+		 * panel内容
+		 */
+		TextArea ta = new TextArea();
+		ta.setName("ta");
+		panel.addComponent(ta, ta.getName(), 1, 1, 1, 1, 1, 1);
+		// 创建一个线程池
+		long start_time = SystemTime.currentTimeMillis();
+		ta.append("程序开始运行于" + SystemTime.formatTime(start_time) + "\n");
+		int taskSize = 5;
+		ExecutorService pool = Executors.newFixedThreadPool(taskSize);
+		// ScheduledExecutorService pool1 = Executors.newScheduledThreadPool(taskSize);
+		// 创建多个有返回值的任务
+		List<FutureTask<String>> list = new ArrayList<>();
+		for (int i = 0; i < taskSize; i++) {
+			Callable<String> c = new MyCallable(i + " ", panel);
+			FutureTask<String> futureTask = new FutureTask<>(c);
+			list.add(futureTask);
+			pool.submit(futureTask);
+			try {
+				Thread.sleep(1000 * 1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// pool1.scheduleAtFixedRate(futureTask, 0, 1000, TimeUnit.SECONDS);
+		}
+		// 关闭线程池
+		pool.shutdown();
+		// 获取所有并发任务的运行结果
+		for (FutureTask<String> f : list) {
+			// 从Future对象上获取任务的返回值，并输出到控制台
+			try {
+				String result = f.get();
+				ta.append(result + "\n");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		long end_time = SystemTime.currentTimeMillis();
+		ta.append("程序结束运行于" + SystemTime.formatTime(end_time) + "，运行时间" + (end_time - start_time) + "毫秒\n");
+		/*
+		 * help
+		 */
+		JFrame help_frame = new JFrame("Help");
+		card_frame.setHelpContents(help_frame);
+		help_frame.setSize(200, 200);
+		/*
+		 * about
+		 */
+		Dialog about_dialog = new Dialog(card_frame);
+		card_frame.setAbout(about_dialog);
+		about_dialog.setTitle("About");
+		about_dialog.setSize(200, 200);
+	}
+
+	class MyCallable implements Callable<String> {
+		private String taskNum;
+		private GridBagPanel panel;
+
+		MyCallable(String taskNum, GridBagPanel panel) {
+			this.taskNum = taskNum;
+			this.panel = panel;
+		}
+
+		@Override
+		public String call() throws Exception {
+			// TODO Auto-generated method stub
+			TextArea ta = (TextArea) this.panel.getComponent("ta");
+			long start_time = SystemTime.currentTimeMillis();
+			ta.append(taskNum + "于" + SystemTime.formatTime(start_time) + "启动\n");
+			Thread.sleep(1000 * 3);
+			long end_time = SystemTime.currentTimeMillis();
+			ta.append("\t\t\t\t" + taskNum + "于" + SystemTime.formatTime(end_time) + "终止\n");
+			return taskNum + "任务返回运行结果,执行时间为" + (end_time - start_time) + "毫秒";
+		}
 	}
 
 	private void frame_test(final double mean, final double variance, final int size) {
@@ -43,7 +139,7 @@ public class Tests {
 				// Y轴
 				graphics.drawLine(card_frame.getWidth() / 2, 0, card_frame.getWidth() / 2, card_frame.getHeight());
 				// 生成正态分布随机数
-				double[] nums = Tests.this.ran(mean, variance, size);
+				double[] nums = Tests.this.randomND(mean, variance, size);
 				// 找出样本最小值、最大值
 				double min = 0;
 				double max = 0;
@@ -97,7 +193,7 @@ public class Tests {
 		about_dialog.setSize(200, 200);
 	}
 
-	private double[] ran(double mean, double variance, int size) {
+	private double[] randomND(double mean, double variance, int size) {
 		double[] result = new double[size];
 		// 生成正态分布随机数
 		NormalDistribution normal_dis = new NormalDistribution(mean, variance, null);
@@ -116,7 +212,7 @@ public class Tests {
 	@Test
 	public void time_test() {
 		// TODO Auto-generated method stub
-		System.out.println(SystemTime.getCurrentTime());
+		System.out.println(SystemTime.currentFormattedTime());
 	}
 
 	@Test
