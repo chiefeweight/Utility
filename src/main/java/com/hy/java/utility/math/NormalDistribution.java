@@ -8,8 +8,8 @@ public final class NormalDistribution {
 	private final double mean;
 	private final double variance;
 	private final double standard_deviation;
-	private final Random rng_generator1;
-	private final Random rng_generator2;
+	private final Random rnd_generator1;
+	private final Random rnd_generator2;
 
 	/**
 	 * 返回一个服从正态分布N(mean,variance)的随机数；或返回一对服从联合正态分布的随机数
@@ -31,8 +31,8 @@ public final class NormalDistribution {
 		if (random_number_generator == null) {
 			random_number_generator = new Random();
 		}
-		this.rng_generator1 = random_number_generator;
-		this.rng_generator2 = random_number_generator;
+		this.rnd_generator1 = random_number_generator;
+		this.rnd_generator2 = random_number_generator;
 	}
 
 	/**
@@ -41,13 +41,13 @@ public final class NormalDistribution {
 	 * @return x
 	 */
 	public double nextRandom() {
-		double rng1 = 0.0;
-		while (rng1 == 0.0) {
-			rng1 = this.rng_generator1.nextDouble();
+		double rnd1 = 0.0;
+		while (rnd1 == 0.0) {
+			rnd1 = this.rnd_generator1.nextDouble();
 		}
-		double r = Math.sqrt(-2.0 * Math.log(rng1));
-		double rng2 = this.rng_generator2.nextDouble();
-		return r * Math.cos(2.0 * Math.PI * rng2) * this.standard_deviation + this.mean;
+		double r = Math.sqrt(-2.0 * Math.log(rnd1));
+		double rnd2 = this.rnd_generator2.nextDouble();
+		return r * Math.cos(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
 	}
 
 	/**
@@ -56,14 +56,14 @@ public final class NormalDistribution {
 	 * @return (x,y)
 	 */
 	public Pair<Double, Double> nextXYRandom() {
-		double rng1 = 0.0;
-		while (rng1 == 0.0) {
-			rng1 = rng_generator1.nextDouble();
+		double rnd1 = 0.0;
+		while (rnd1 == 0.0) {
+			rnd1 = rnd_generator1.nextDouble();
 		}
-		double r = Math.sqrt(-2.0 * Math.log(rng1));
-		double rng2 = this.rng_generator2.nextDouble();
-		double x = r * Math.cos(2.0 * Math.PI * rng2) * this.standard_deviation + this.mean;
-		double y = r * Math.sin(2.0 * Math.PI * rng2) * this.standard_deviation + this.mean;
+		double r = Math.sqrt(-2.0 * Math.log(rnd1));
+		double rnd2 = this.rnd_generator2.nextDouble();
+		double x = r * Math.cos(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
+		double y = r * Math.sin(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
 		return Pair.createPair(new Double(x), new Double(y));
 	}
 }
