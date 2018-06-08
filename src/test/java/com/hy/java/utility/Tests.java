@@ -34,7 +34,7 @@ public class Tests {
 	/**
 	 * 多线程编程
 	 * 
-	 * 放到developing分支上
+	 * 放到developing分支上。多次commit
 	 */
 	private void world_frame() {
 		CardFrame card_frame = new CardFrame("World", 800, 600);
