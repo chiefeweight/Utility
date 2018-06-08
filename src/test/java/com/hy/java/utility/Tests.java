@@ -42,7 +42,7 @@ public class Tests {
 		 * panel
 		 */
 		GridBagPanel panel = new GridBagPanel("main_panel");
-		card_frame.addGridBagPanel(panel, panel.getName());
+		card_frame.addGridBagPanel(panel);
 		/*
 		 * panel内容
 		 */
@@ -91,16 +91,15 @@ public class Tests {
 		/*
 		 * help
 		 */
-		JFrame help_frame = new JFrame("Help");
+		JFrame help_frame = new JFrame();
+		help_frame.setSize(300, 200);
 		card_frame.setHelpContents(help_frame);
-		help_frame.setSize(200, 200);
 		/*
 		 * about
 		 */
 		Dialog about_dialog = new Dialog(card_frame);
+		about_dialog.setSize(300, 200);
 		card_frame.setAbout(about_dialog);
-		about_dialog.setTitle("About");
-		about_dialog.setSize(200, 200);
 	}
 
 	class SampleUnit implements Callable<String> {
@@ -188,7 +187,7 @@ public class Tests {
 				}
 			}
 		};
-		card_frame.addGridBagPanel(panel, panel.getName());
+		card_frame.addGridBagPanel(panel);
 		// help
 		JFrame help_frame = new JFrame("Help");
 		card_frame.setHelpContents(help_frame);

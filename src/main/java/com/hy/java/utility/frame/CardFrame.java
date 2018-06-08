@@ -34,12 +34,14 @@ import javax.swing.WindowConstants;
  * <ul>
  * <li>1、制作各个菜单（使用{@code JMenu}和{@code JMenuItem}），然后用<code>addJMenu()</code>把制作好的菜单添加到菜单栏中。</li>
  * <li>2、制作各个Panel（使用{@code GridBagPanel}），然后用<code>addGridBagPanel()</code>把制作好的各个Panel添加到整个窗口容器中。</li>
- * <li>3、用<code>setHelp()</code>和<code>setAbout()</code>为两个菜单项设置响应面板，完成Help和About菜单项的制作。</li>
- * <li>4、如需响应关闭事件，则先调用<code>setDefaultCloseOperation()</code>改变关闭操作，然后用<br>
+ * <li>3、制作Help
+ * Contents菜单项对应的{@code JFrame}（{@code JFrame}的尺寸、所含的{@code GridBagPanel}的内容），然后用<code>setHelpContents()</code>把制作好的窗口添加到Help
+ * Contents菜单项的监听中。</li>
+ * <li>4、制作About菜单项对应的{@code Dialog}（{@code Dialog}的尺寸、内容），然后用<code>setAbout()</code>把制作好的对话框添加到About菜单项的监听中。</li>
+ * <li>5、如需响应整个窗口的关闭事件，则先调用<code>setDefaultCloseOperation()</code>改变关闭操作，然后用<br>
  * <code>addWindowListener(new {@code WindowAdapter}(){public void windowClosing(WindowEvent we) {}})</code>添加关闭响应。</li>
- * <br />
- * 注：1、制作各个菜单时，必须用{@code JMenu}和{@code JMenuItem}的setName()为每个项设置标识。2、用<code>switchTo()</code>管理不同Panel之间的切换。
  * </ul>
+ * 注：1、制作各个菜单时，必须用{@code JMenu}和{@code JMenuItem}的setName()为每个项设置标识。2、用<code>switchTo()</code>管理不同Panel之间的切换。
  * </p>
  * 
  * @author chiefeweight
@@ -128,45 +130,92 @@ public class CardFrame extends JFrame {
 	 * 
 	 * @param gridBagPanel
 	 *            要添加的<code>gridBagPanel</code>
-	 * @param panel_obj_name
-	 *            所添加gridBagPanel在其所属{@code CardFrame}中的标识，不是这个gridBagPanel显示的文本。
 	 */
-	public void addGridBagPanel(GridBagPanel gridBagPanel, String panel_obj_name) {
+	public void addGridBagPanel(GridBagPanel gridBagPanel) {
+		String panel_obj_name = gridBagPanel.getName();
 		if (!this.component_map.containsKey(panel_obj_name)) {
-			gridBagPanel.setName(panel_obj_name);
-			this.add(gridBagPanel, gridBagPanel.getName());
-			this.component_map.put(gridBagPanel.getName(), gridBagPanel);
+			this.add(gridBagPanel, panel_obj_name);
+			this.component_map.put(panel_obj_name, gridBagPanel);
 			this.validate();
 		} else {
 			System.out.println(panel_obj_name + "已存在，该面板添加失败。请给面板对象重起panel_obj_name");
 		}
 	}
 
-	public void setHelpContents(final JFrame frame) {
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.help_menu_item_Help_Contents.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				frame.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - frame.getWidth()) / 2, CardFrame.this.getY() + (CardFrame.this.getHeight() - frame.getHeight()) / 2);
-				frame.setVisible(true);
-			}
-		});
+	/**
+	 * 设置Help Contents菜单项对应的{@code JFrame}。
+	 * 
+	 * @param frame
+	 *            Help Contents菜单项对应的<code>frame</code>
+	 */
+	public void setHelpContents(JFrame frame) {
+		this.help_menu_item_Help_Contents.addActionListener(new HelpContentsListener(frame));
 	}
 
-	public void setAbout(final Dialog dialog) {
-		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-		dialog.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				dialog.dispose();
-			}
-		});
-		this.help_menu_item_About.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				dialog.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - dialog.getWidth()) / 2, CardFrame.this.getY() + (CardFrame.this.getHeight() - dialog.getHeight()) / 2);
-				dialog.setVisible(true);
-			}
-		});
+	/**
+	 * Help Contents菜单项的监听器
+	 */
+	private class HelpContentsListener implements ActionListener {
+		private JFrame frame;
+		private int default_width;
+		private int default_height;
+
+		public HelpContentsListener(JFrame frame) {
+			this.frame = frame;
+			this.frame.setTitle("Help");
+			this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			this.default_width = this.frame.getWidth();
+			this.default_height = this.frame.getHeight();
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			this.frame.setSize(this.default_width, this.default_height);
+			this.frame.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - this.frame.getWidth()) / 2, CardFrame.this.getY() + (CardFrame.this.getHeight() - this.frame.getHeight()) / 2);
+			this.frame.setVisible(true);
+		}
+	}
+
+	/**
+	 * 设置About菜单项对应的{@code Dialog}。
+	 * 
+	 * @param dialog
+	 *            About菜单项对应的<code>dialog</code>
+	 */
+	public void setAbout(Dialog dialog) {
+		this.help_menu_item_About.addActionListener(new AboutListener(dialog));
+	}
+
+	/**
+	 * About菜单项的监听器
+	 */
+	private class AboutListener implements ActionListener {
+		private Dialog dialog;
+		private int default_width;
+		private int default_height;
+
+		public AboutListener(Dialog dialog) {
+			this.dialog = dialog;
+			this.dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+			this.dialog.setTitle(CardFrame.this.help_menu_item_About.getText());
+			this.dialog.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent we) {
+					AboutListener.this.dialog.dispose();
+				}
+			});
+			this.default_width = this.dialog.getWidth();
+			this.default_height = this.dialog.getHeight();
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			this.dialog.setSize(this.default_width, this.default_height);
+			this.dialog.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - this.dialog.getWidth()) / 2,
+					CardFrame.this.getY() + (CardFrame.this.getHeight() - this.dialog.getHeight()) / 2);
+			this.dialog.setVisible(true);
+		}
 	}
 
 	/**
