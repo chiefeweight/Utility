@@ -31,6 +31,9 @@ public class Tests {
 		t.world_frame();
 	}
 
+	/**
+	 * 多线程编程
+	 */
 	private void world_frame() {
 		CardFrame card_frame = new CardFrame("World", 800, 600);
 		/*
