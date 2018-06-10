@@ -54,7 +54,8 @@ public class CardFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = -4754225216291161975L;
 	private CardLayout card_layout;
-	private Map<String, Component> component_map;
+	private Map<String, JMenu> menu_map;
+	private Map<String, GridBagPanel> panel_map;
 	private JMenuBar menubar;
 	private JMenu help_menu;
 	private JMenuItem help_menu_item_Help_Contents;
@@ -66,7 +67,8 @@ public class CardFrame extends JFrame {
 	 * <code>width</code>和<code>height</code>的单位均为像素。
 	 */
 	public CardFrame(String title, int width, int height) {
-		this.component_map = new HashMap<>();
+		this.menu_map = new HashMap<>();
+		this.panel_map = new HashMap<>();
 		/* 初始化窗口 */
 		this.initFrame(title, width, height);
 		/* 初始化菜单栏 */
@@ -87,9 +89,7 @@ public class CardFrame extends JFrame {
 	private void initJMenuBar(String title) {
 		// 菜单栏
 		this.menubar = new JMenuBar();
-		this.menubar.setName("menubar");
 		this.setJMenuBar(this.menubar);
-		this.component_map.put(this.menubar.getName(), this.menubar);
 		// "Help"菜单
 		this.help_menu = new JMenu("Help");
 		this.help_menu.setName("help_menu");
@@ -116,10 +116,10 @@ public class CardFrame extends JFrame {
 	 *            所添加菜单是从左数第几个。输入范围≥1。
 	 */
 	public void addJMenu(JMenu jMenu, String menu_obj_name, int index) {
-		if (!this.component_map.containsKey(menu_obj_name)) {
+		if (!this.menu_map.containsKey(menu_obj_name)) {
 			jMenu.setName(menu_obj_name);
 			this.menubar.add(jMenu, jMenu.getName(), index - 1);
-			this.component_map.put(jMenu.getName(), jMenu);
+			this.menu_map.put(jMenu.getName(), jMenu);
 		} else {
 			System.out.println(menu_obj_name + "已存在，该菜单添加失败。请给菜单对象重起menu_obj_name");
 		}
@@ -133,9 +133,9 @@ public class CardFrame extends JFrame {
 	 */
 	public void addGridBagPanel(GridBagPanel gridBagPanel) {
 		String panel_obj_name = gridBagPanel.getName();
-		if (!this.component_map.containsKey(panel_obj_name)) {
+		if (!this.panel_map.containsKey(panel_obj_name)) {
 			this.add(gridBagPanel, panel_obj_name);
-			this.component_map.put(panel_obj_name, gridBagPanel);
+			this.panel_map.put(panel_obj_name, gridBagPanel);
 			this.validate();
 		} else {
 			System.out.println(panel_obj_name + "已存在，该面板添加失败。请给面板对象重起panel_obj_name");
@@ -216,6 +216,36 @@ public class CardFrame extends JFrame {
 					CardFrame.this.getY() + (CardFrame.this.getHeight() - this.dialog.getHeight()) / 2);
 			this.dialog.setVisible(true);
 		}
+	}
+
+	/**
+	 * 根据menu_obj_name，返回组件
+	 * 
+	 * @param menu_obj_name
+	 *            菜单的menu_obj_name
+	 * @return 菜单。如果该{@code CardFrame}中不包含menu_obj_name，则返回{@code null}
+	 */
+	public JMenu getMenu(String menu_obj_name) {
+		JMenu result = null;
+		if (this.menu_map.containsKey(menu_obj_name)) {
+			result = this.menu_map.get(menu_obj_name);
+		}
+		return result;
+	}
+
+	/**
+	 * 根据panel_obj_name，返回组件
+	 * 
+	 * @param panel_obj_name
+	 *            面板的panel_obj_name
+	 * @return 面板。如果该{@code CardFrame}中不包含panel_obj_name，则返回{@code null}
+	 */
+	public GridBagPanel getGridBagPanel(String panel_obj_name) {
+		GridBagPanel result = null;
+		if (this.panel_map.containsKey(panel_obj_name)) {
+			result = this.panel_map.get(panel_obj_name);
+		}
+		return result;
 	}
 
 	/**
