@@ -234,7 +234,7 @@ public class CardFrame extends JFrame {
 	}
 
 	/**
-	 * 根据panel_obj_name，返回组件
+	 * 根据panel_obj_name，返回面板
 	 * 
 	 * @param panel_obj_name
 	 *            面板的panel_obj_name
