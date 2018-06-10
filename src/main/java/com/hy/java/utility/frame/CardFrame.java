@@ -234,16 +234,7 @@ public class CardFrame extends JFrame {
 	}
 
 	/**
-	 * 返回所有面板
-	 * 
-	 * @return 所有面板
-	 */
-	public Map<String, GridBagPanel> getAllGridBagPanel() {
-		return this.panel_map;
-	}
-
-	/**
-	 * 返回所有面板
+	 * 根据panel_obj_name，返回组件
 	 * 
 	 * @param panel_obj_name
 	 *            面板的panel_obj_name
@@ -255,6 +246,15 @@ public class CardFrame extends JFrame {
 			result = this.panel_map.get(panel_obj_name);
 		}
 		return result;
+	}
+
+	/**
+	 * 返回所有面板
+	 * 
+	 * @return 所有面板
+	 */
+	public Map<String, GridBagPanel> getAllGridBagPanel() {
+		return this.panel_map;
 	}
 
 	/**
