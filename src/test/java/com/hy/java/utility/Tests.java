@@ -48,7 +48,7 @@ public class Tests {
 		 */
 		TextArea main_text_area = new TextArea();
 		main_text_area.setName("main_text_area");
-		panel.addComponent(main_text_area, main_text_area.getName(), 1, 1, 1, 1, 0, 0);
+		panel.addComponent(main_text_area, main_text_area.getName(), 1, 1, 1, 1, 0, 0, true);
 		// 创建一个线程池
 		long start_time = SystemTime.currentTimeMillis();
 		main_text_area.append("世界于" + SystemTime.formatTime(start_time) + "开始运行\n");

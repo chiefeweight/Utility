@@ -59,7 +59,6 @@ public class GridBagPanel extends JPanel {
 		this.grid_bag_layout = new GridBagLayout();
 		this.setLayout(this.grid_bag_layout);
 		this.grid_bag_constraints = new GridBagConstraints();
-		this.grid_bag_constraints.fill = GridBagConstraints.BOTH;
 		this.component_map = new HashMap<>();
 	}
 
@@ -82,6 +81,8 @@ public class GridBagPanel extends JPanel {
 	 *            组件横向额外占的格子数，默认是0
 	 * @param weighty
 	 *            组件纵向额外占的格子数，默认是0
+	 * @param fill
+	 *            组件是否填充所占格。true填充，false不填充
 	 * @see java.awt.GridBagConstraints#gridy
 	 * @see java.awt.GridBagConstraints#gridx
 	 * @see java.awt.GridBagConstraints#gridwidth
@@ -89,23 +90,27 @@ public class GridBagPanel extends JPanel {
 	 * @see java.awt.GridBagConstraints#weightx
 	 * @see java.awt.GridBagConstraints#weighty
 	 */
-	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty) {
+	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty, boolean fill) {
 		if (!this.component_map.containsKey(comp_obj_name)) {
 			comp.setName(comp_obj_name);
-			this.add(comp);
 			this.grid_bag_constraints.gridy = row - 1;
 			this.grid_bag_constraints.gridx = column - 1;
 			this.grid_bag_constraints.gridwidth = gridwidth;
 			this.grid_bag_constraints.gridheight = gridheight;
 			this.grid_bag_constraints.weightx = weightx;
 			this.grid_bag_constraints.weighty = weighty;
+			if (fill) {
+				this.grid_bag_constraints.fill = GridBagConstraints.BOTH;
+			} else {
+				this.grid_bag_constraints.fill = GridBagConstraints.NONE;
+			}
 			this.grid_bag_layout.setConstraints(comp, this.grid_bag_constraints);
+			this.add(comp);
 			this.component_map.put(comp.getName(), comp);
 			this.validate();
 		} else {
 			System.out.println(comp_obj_name + "已存在，该组件添加失败。请给组件对象重起comp_obj_name");
 		}
-
 	}
 
 	/**
