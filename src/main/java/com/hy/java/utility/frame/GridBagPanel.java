@@ -89,6 +89,7 @@ public class GridBagPanel extends JPanel {
 	 * @see java.awt.GridBagConstraints#gridheight
 	 * @see java.awt.GridBagConstraints#weightx
 	 * @see java.awt.GridBagConstraints#weighty
+	 * @see java.awt.GridBagConstraints#fill
 	 */
 	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty, boolean fill) {
 		if (!this.component_map.containsKey(comp_obj_name)) {
