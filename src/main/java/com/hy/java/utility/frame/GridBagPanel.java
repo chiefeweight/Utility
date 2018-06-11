@@ -78,11 +78,11 @@ public class GridBagPanel extends JPanel {
 	 * @param gridheight
 	 *            组件高度占的格子数
 	 * @param weightx
-	 *            组件横向额外占的格子数，默认是0
+	 *            组件所占格子的横向拉伸系数。如果为0，则组件所占格子不跟随窗口横向拉伸；如果不为0，则组件所占格子跟随窗口横向拉伸，且拉伸时组件所占格子保持其在该行的拉伸比例。
 	 * @param weighty
-	 *            组件纵向额外占的格子数，默认是0
+	 *            组件所占格子的纵向拉伸系数。如果为0，则组件所占格子不跟随窗口纵向拉伸；如果不为0，则组件所占格子跟随窗口纵向拉伸，且拉伸时组件所占格子保持其在该列的拉伸比例。
 	 * @param fill
-	 *            组件是否填充所占格。true填充，false不填充
+	 *            组件是否填充所占格子。true填充，false不填充
 	 * @see java.awt.GridBagConstraints#gridy
 	 * @see java.awt.GridBagConstraints#gridx
 	 * @see java.awt.GridBagConstraints#gridwidth
