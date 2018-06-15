@@ -1,5 +1,6 @@
 package com.hy.java.utility.common;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 用于编辑File，可以实现读、写任意数据的操作
@@ -109,11 +111,13 @@ public class FileEditor {
 	 */
 	public String readFileToString() {
 		String file_content_string = null;
-		if (this.file.exists()) {
-			ByteArrayOutputStream byte_array_output_stream = readFile();
-			file_content_string = byte_array_output_stream.toString();
-		} else {
-			System.out.println("File doesn't exist.");
+		byte[] file_content_bytes = this.readFileToBytes();
+		try {
+			String temp = new String(file_content_bytes, 0, file_content_bytes.length, "GBK");
+			temp.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return file_content_string;
 	}
@@ -122,15 +126,15 @@ public class FileEditor {
 		// TODO Auto-generated method stub
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
 		try {
-			FileInputStream file_input_stream = new FileInputStream(this.file);
-			byte[] temp_bytes = new byte[1024];
+			BufferedInputStream buffered_input_stream = new BufferedInputStream(new FileInputStream(this.file));
+			byte[] buffer_bytes = new byte[1024];
 			int length = -1;
 			// 读取inputStream，存到bytes里。如果返回的读取长度为-1，代表全部读取完毕
-			while ((length = file_input_stream.read(temp_bytes)) != -1) {
+			while ((length = buffered_input_stream.read(buffer_bytes)) != -1) {
 				// 把bytes写到byte_array_output_stream中，中间参数代表要写的bytes起始位置，length代表要写的长度
-				result.write(temp_bytes, 0, length);
+				result.write(buffer_bytes, 0, length);
 			}
-			file_input_stream.close();
+			buffered_input_stream.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
