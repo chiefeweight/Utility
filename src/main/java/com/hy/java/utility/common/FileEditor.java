@@ -111,10 +111,35 @@ public class FileEditor {
 	 */
 	public String readFileToString() {
 		String file_content_string = null;
+		// 读取文件bytes
 		byte[] file_content_bytes = this.readFileToBytes();
 		try {
-			String temp = new String(file_content_bytes, 0, file_content_bytes.length, "GBK");
-			temp.getBytes("UTF-8");
+			// 对file_content_bytes先默认用UTF-8编码，得到file_content_string
+			file_content_string = new String(file_content_bytes, "UTF-8");
+			// 判断对file_content_bytes是否确实应该用UTF-8编码
+			boolean is_utf8 = true;
+			/*
+			 * 将file_content_string用UTF-8解码，获得unchecked_bytes。
+			 * 
+			 * 如果对file_content_bytes确实应该用UTF-8编码，则经历了编码后解码的unchecked_bytes和原file_content_bytes会一致
+			 * 
+			 * 如果对file_content_bytes不应该用UTF-8编码，则经历了编码后解码的unchecked_bytes和原file_content_bytes不一致
+			 */
+			byte[] unchecked_bytes = file_content_string.getBytes("UTF-8");
+			if (file_content_bytes.length == unchecked_bytes.length) {
+				for (int i = 0; i < unchecked_bytes.length; i++) {
+					if (unchecked_bytes[i] != file_content_bytes[i]) {
+						is_utf8 = false;
+						break;
+					}
+				}
+			} else {
+				is_utf8 = false;
+			}
+			// 对于非UTF-8编码的内容，默认用GBK编码
+			if (!is_utf8) {
+				file_content_string = new String(file_content_bytes, "GBK");
+			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
