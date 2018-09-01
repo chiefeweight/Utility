@@ -227,7 +227,7 @@ public class Tests {
 		Traverser.traverseFolder("G:\\1\\", t);
 		for (String s : t) {
 			FileEditor f = new FileEditor(s);
-			System.out.println(f.readFileToString());
+			System.out.println(f.readFileToString("gbk"));
 		}
 	}
 }
