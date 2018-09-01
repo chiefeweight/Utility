@@ -32,8 +32,7 @@ public class FileEditor {
 	 */
 	public FileEditor(String file_path) {
 		file_path = file_path.replaceAll("\\*", "_").replaceAll("\\?", "_").replaceAll("<", "_").replaceAll(">", "_");
-		this.file = new File(file_path);
-		fileIsReady();
+		init(new File(file_path));
 	}
 
 	/**
@@ -43,8 +42,19 @@ public class FileEditor {
 	 *            目标文件。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public FileEditor(File file) {
+		init(file);
+	}
+
+	private void init(File file) {
 		this.file = file;
-		fileIsReady();
+		if (!fileIsReady()) {
+			try {
+				throw new IOException("This FileEditor cannot work");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private boolean fileIsReady() {
