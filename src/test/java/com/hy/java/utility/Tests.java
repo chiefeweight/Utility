@@ -22,6 +22,7 @@ import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.frame.GridBagPanel;
 import com.hy.java.utility.math.Matrix;
 import com.hy.java.utility.math.NormalDistribution;
+import com.hy.java.utility.math.Vector;
 
 public class Tests {
 
@@ -34,9 +35,43 @@ public class Tests {
 
 	@Test
 	public void matrix() {
-		Matrix m = new Matrix(3, 3);
-		m.setElement(3, 4, 1);
-		System.out.println(m.getElement(3, 4));
+		Matrix matrix_A = new Matrix(2, 3);
+		matrix_A.setElement(1, 1, 0);
+		matrix_A.setElement(1, 2, -1);
+		matrix_A.setElement(1, 3, -2);
+		matrix_A.setElement(2, 1, 2);
+		matrix_A.setElement(2, 2, 3);
+		matrix_A.setElement(2, 3, 1);
+		Matrix matrix_B = Matrix.numMultiplication(-2, matrix_A);
+		Matrix.print(matrix_A);
+		System.out.println();
+		Matrix.print(matrix_B);
+		System.out.println();
+		Matrix.print(Matrix.matrixAddition(matrix_A, matrix_B));
+		System.out.println();
+		Matrix.print(Matrix.matrixTranspose(matrix_A));
+		System.out.println();
+		Vector.print(matrix_A.getRowVector(2));
+		Vector.print(matrix_B.getColumnVector(1));
+		System.out.println();
+		Matrix.print(Matrix.matrixMultiplication(matrix_A, Matrix.matrixTranspose(matrix_A)));
+	}
+
+	@Test
+	public void vector() {
+		Vector vector_A = new Vector(3);
+		vector_A.setCoordinate(1, 1);
+		vector_A.setCoordinate(2, 2);
+		vector_A.setCoordinate(3, -3);
+		Vector vector_B = Vector.scalarMultiplication(-2, vector_A);
+		Vector.print(vector_A);
+		System.out.println();
+		Vector.print(vector_B);
+		System.out.println();
+		Vector.print(Vector.vectorAddition(vector_A, vector_B));
+		System.out.println();
+		Vector.print(Vector.vectorSubtraction(vector_A, vector_B));
+		System.out.println(Vector.dotProduct(vector_A, vector_B));
 	}
 
 	/**
