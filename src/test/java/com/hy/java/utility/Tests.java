@@ -20,6 +20,7 @@ import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.common.Traverser;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.frame.GridBagPanel;
+import com.hy.java.utility.math.Matrix;
 import com.hy.java.utility.math.NormalDistribution;
 
 public class Tests {
@@ -29,6 +30,13 @@ public class Tests {
 		Tests t = new Tests();
 		// t.frame_test(-10.0, 5555.0, 5000000);
 		t.world_frame();
+	}
+
+	@Test
+	public void matrix() {
+		Matrix m = new Matrix(3, 3);
+		m.setElement(3, 4, 1);
+		System.out.println(m.getElement(3, 4));
 	}
 
 	/**
