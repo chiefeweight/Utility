@@ -267,7 +267,7 @@ public class Tests {
 	@Test
 	public void file_test() {
 		List<String> t = new ArrayList<>();
-		Traverser.traverseDir("E:\\", t);
+		Traverser.traverseDir("H:\\", t);
 		for (String s : t) {
 			FileEditor f = new FileEditor(s);
 			System.out.println(f.readFileToString("gbk"));
