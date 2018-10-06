@@ -3,6 +3,7 @@ package com.hy.java.utility;
 import java.awt.Dialog;
 import java.awt.Graphics;
 import java.awt.TextArea;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -20,7 +21,9 @@ import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.common.Traverser;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.frame.GridBagPanel;
+import com.hy.java.utility.math.Matrix;
 import com.hy.java.utility.math.NormalDistribution;
+import com.hy.java.utility.math.Vector;
 
 public class Tests {
 
@@ -29,6 +32,61 @@ public class Tests {
 		Tests t = new Tests();
 		// t.frame_test(-10.0, 5555.0, 5000000);
 		t.world_frame();
+	}
+
+	@Test
+	public void matrix() {
+		Matrix matrix_A = new Matrix(2, 3);
+		matrix_A.setElement(1, 1, 0);
+		matrix_A.setElement(1, 2, -1);
+		matrix_A.setElement(1, 3, -2);
+		matrix_A.setElement(2, 1, 2);
+		matrix_A.setElement(2, 2, 3);
+		matrix_A.setElement(2, 3, 1);
+		Matrix matrix_B = Matrix.numMultiplication(BigDecimal.valueOf(-2), matrix_A);
+		Matrix.print(matrix_A);
+		System.out.println();
+		Matrix.print(matrix_B);
+		System.out.println();
+		Matrix.print(Matrix.matrixAddition(matrix_A, matrix_B));
+		System.out.println();
+		Matrix.print(Matrix.matrixSubtraction(matrix_A, matrix_B));
+		System.out.println("==========================");
+		Matrix matrix_C = new Matrix(4, 4);
+		matrix_C.setElement(1, 1, 22);
+		matrix_C.setElement(1, 2, 4);
+		matrix_C.setElement(1, 3, 4);
+		matrix_C.setElement(1, 4, 23);
+		matrix_C.setElement(2, 1, 3);
+		matrix_C.setElement(2, 2, 3);
+		matrix_C.setElement(2, 3, 2);
+		matrix_C.setElement(2, 4, 6);
+		matrix_C.setElement(3, 1, 1);
+		matrix_C.setElement(3, 2, 23);
+		matrix_C.setElement(3, 3, 2);
+		matrix_C.setElement(3, 4, 2);
+		matrix_C.setElement(4, 1, 3);
+		matrix_C.setElement(4, 2, 4);
+		matrix_C.setElement(4, 3, 54);
+		matrix_C.setElement(4, 4, 4);
+		Matrix.print(Matrix.matrixMultiplication(matrix_C, Matrix.matrixInverse(matrix_C)));
+	}
+
+	@Test
+	public void vector() {
+		Vector vector_A = new Vector(3);
+		vector_A.setCoordinate(1, 1);
+		vector_A.setCoordinate(2, 2);
+		vector_A.setCoordinate(3, -3);
+		Vector vector_B = Vector.scalarMultiplication(BigDecimal.valueOf(-2), vector_A);
+		Vector.print(vector_A);
+		System.out.println();
+		Vector.print(vector_B);
+		System.out.println();
+		Vector.print(Vector.vectorAddition(vector_A, vector_B));
+		System.out.println();
+		Vector.print(Vector.vectorSubtraction(vector_A, vector_B));
+		System.out.println(Vector.dotProduct(vector_A, vector_B));
 	}
 
 	/**
@@ -224,7 +282,7 @@ public class Tests {
 	@Test
 	public void file_test() {
 		List<String> t = new ArrayList<>();
-		Traverser.traverseFolder("G:\\1\\", t);
+		Traverser.traverseDir("H:\\", t);
 		for (String s : t) {
 			FileEditor f = new FileEditor(s);
 			System.out.println(f.readFileToString("gbk"));
