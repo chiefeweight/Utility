@@ -1,8 +1,10 @@
 package com.hy.java.utility.math;
 
+import java.math.BigDecimal;
+
 public class Vector {
 	private int dimension;
-	private double[] coordinates;
+	private BigDecimal[] coordinates;
 
 	private enum Operations {
 		Get_Set, Vector_Addition, Dot_Product
@@ -10,7 +12,7 @@ public class Vector {
 
 	public Vector(int dimension) {
 		this.dimension = dimension;
-		this.coordinates = new double[this.dimension];
+		this.coordinates = new BigDecimal[this.dimension];
 	}
 
 	public int getDimension() {
@@ -19,19 +21,25 @@ public class Vector {
 
 	public void setCoordinate(int coordinate_index, double coordinate) {
 		if (checkDimension(coordinate_index, this.getDimension(), Operations.Get_Set)) {
+			this.coordinates[coordinate_index - 1] = BigDecimal.valueOf(coordinate);
+		}
+	}
+
+	public void setCoordinate(int coordinate_index, BigDecimal coordinate) {
+		if (checkDimension(coordinate_index, this.getDimension(), Operations.Get_Set)) {
 			this.coordinates[coordinate_index - 1] = coordinate;
 		}
 	}
 
-	public double getCoordinate(int coordinate_index) {
-		double result = 0;
+	public BigDecimal getCoordinate(int coordinate_index) {
+		BigDecimal result = null;
 		if (checkDimension(coordinate_index, this.getDimension(), Operations.Get_Set)) {
 			result = this.coordinates[coordinate_index - 1];
 		}
 		return result;
 	}
 
-	public double[] getCoordinates() {
+	public BigDecimal[] getCoordinates() {
 		return this.coordinates;
 	}
 
@@ -40,7 +48,7 @@ public class Vector {
 	 * 
 	 * @param vector_A
 	 * @param vector_B
-	 * @return
+	 * @return vector_A+vector_B
 	 */
 	public static Vector vectorAddition(Vector vector_A, Vector vector_B) {
 		Vector result = null;
@@ -48,7 +56,7 @@ public class Vector {
 		if (checkDimension(vector_A.getDimension(), vector_B.getDimension(), Operations.Vector_Addition)) {
 			result = new Vector(vector_A.getDimension());
 			for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
-				result.setCoordinate(coordinate_index, vector_A.getCoordinate(coordinate_index) + vector_B.getCoordinate(coordinate_index));
+				result.setCoordinate(coordinate_index, vector_A.getCoordinate(coordinate_index).add(vector_B.getCoordinate(coordinate_index)));
 			}
 		}
 		return result;
@@ -59,10 +67,10 @@ public class Vector {
 	 * 
 	 * @param vector_A
 	 * @param vector_B
-	 * @return
+	 * @return vector_A-vector_B
 	 */
 	public static Vector vectorSubtraction(Vector vector_A, Vector vector_B) {
-		return Vector.vectorAddition(vector_A, Vector.scalarMultiplication(-1, vector_B));
+		return Vector.vectorAddition(vector_A, Vector.scalarMultiplication(BigDecimal.valueOf(-1.0), vector_B));
 	}
 
 	/**
@@ -70,12 +78,12 @@ public class Vector {
 	 * 
 	 * @param num
 	 * @param vector
-	 * @return
+	 * @return num*vector
 	 */
-	public static Vector scalarMultiplication(double num, Vector vector) {
+	public static Vector scalarMultiplication(BigDecimal num, Vector vector) {
 		Vector result = new Vector(vector.getDimension());
 		for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
-			result.setCoordinate(coordinate_index, num * vector.getCoordinate(coordinate_index));
+			result.setCoordinate(coordinate_index, vector.getCoordinate(coordinate_index).multiply(num));
 		}
 		return result;
 	}
@@ -85,14 +93,14 @@ public class Vector {
 	 * 
 	 * @param vector_A
 	 * @param vector_B
-	 * @return
+	 * @return vector_A·vector_B
 	 */
-	public static double dotProduct(Vector vector_A, Vector vector_B) {
-		double result = 0;
+	public static BigDecimal dotProduct(Vector vector_A, Vector vector_B) {
+		BigDecimal result = new BigDecimal("0");
 		// 同型则可以做点乘
 		if (checkDimension(vector_A.getDimension(), vector_B.getDimension(), Operations.Dot_Product)) {
 			for (int coordinate_index = 1; coordinate_index <= vector_A.getDimension(); coordinate_index++) {
-				result += vector_A.getCoordinate(coordinate_index) * vector_B.getCoordinate(coordinate_index);
+				result = result.add(vector_A.getCoordinate(coordinate_index).multiply(vector_B.getCoordinate(coordinate_index)));
 			}
 		}
 		return result;
@@ -104,7 +112,7 @@ public class Vector {
 	 * @param dimension_A
 	 * @param dimension_B
 	 * @param mode
-	 * @return
+	 * @return dimension_ok
 	 */
 	private static boolean checkDimension(int dimension_A, int dimension_B, Operations mode) {
 		boolean dimension_ok = false;
@@ -140,18 +148,18 @@ public class Vector {
 	 * 打印一个向量，同时会将打印内容以String形式返回
 	 * 
 	 * @param vector
-	 * @return
+	 * @return {@code String}格式的vector内容
 	 */
 	public static String print(Vector vector) {
 		String result = null;
 		StringBuilder sb = new StringBuilder();
 		// 先向sb中添加第一个元素
 		int coordinate_index = 1;
-		sb.append(vector.getCoordinate(coordinate_index));
+		sb.append(vector.getCoordinate(coordinate_index).doubleValue());
 		coordinate_index++;
 		// 后面的元素前都加制表符
 		while (coordinate_index <= vector.getDimension()) {
-			sb.append("\t" + vector.getCoordinate(coordinate_index));
+			sb.append("\t" + vector.getCoordinate(coordinate_index).doubleValue());
 			coordinate_index++;
 		}
 		result = sb.toString();

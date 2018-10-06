@@ -3,6 +3,7 @@ package com.hy.java.utility;
 import java.awt.Dialog;
 import java.awt.Graphics;
 import java.awt.TextArea;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -42,19 +43,33 @@ public class Tests {
 		matrix_A.setElement(2, 1, 2);
 		matrix_A.setElement(2, 2, 3);
 		matrix_A.setElement(2, 3, 1);
-		Matrix matrix_B = Matrix.numMultiplication(-2, matrix_A);
+		Matrix matrix_B = Matrix.numMultiplication(BigDecimal.valueOf(-2), matrix_A);
 		Matrix.print(matrix_A);
 		System.out.println();
 		Matrix.print(matrix_B);
 		System.out.println();
 		Matrix.print(Matrix.matrixAddition(matrix_A, matrix_B));
 		System.out.println();
-		Matrix.print(Matrix.matrixTranspose(matrix_A));
-		System.out.println();
-		Vector.print(matrix_A.getRowVector(2));
-		Vector.print(matrix_B.getColumnVector(1));
-		System.out.println();
-		Matrix.print(Matrix.matrixMultiplication(matrix_A, Matrix.matrixTranspose(matrix_A)));
+		Matrix.print(Matrix.matrixSubtraction(matrix_A, matrix_B));
+		System.out.println("==========================");
+		Matrix matrix_C = new Matrix(4, 4);
+		matrix_C.setElement(1, 1, 22);
+		matrix_C.setElement(1, 2, 4);
+		matrix_C.setElement(1, 3, 4);
+		matrix_C.setElement(1, 4, 23);
+		matrix_C.setElement(2, 1, 3);
+		matrix_C.setElement(2, 2, 3);
+		matrix_C.setElement(2, 3, 2);
+		matrix_C.setElement(2, 4, 6);
+		matrix_C.setElement(3, 1, 1);
+		matrix_C.setElement(3, 2, 23);
+		matrix_C.setElement(3, 3, 2);
+		matrix_C.setElement(3, 4, 2);
+		matrix_C.setElement(4, 1, 3);
+		matrix_C.setElement(4, 2, 4);
+		matrix_C.setElement(4, 3, 54);
+		matrix_C.setElement(4, 4, 4);
+		Matrix.print(Matrix.matrixMultiplication(matrix_C, Matrix.matrixInverse(matrix_C)));
 	}
 
 	@Test
@@ -63,7 +78,7 @@ public class Tests {
 		vector_A.setCoordinate(1, 1);
 		vector_A.setCoordinate(2, 2);
 		vector_A.setCoordinate(3, -3);
-		Vector vector_B = Vector.scalarMultiplication(-2, vector_A);
+		Vector vector_B = Vector.scalarMultiplication(BigDecimal.valueOf(-2), vector_A);
 		Vector.print(vector_A);
 		System.out.println();
 		Vector.print(vector_B);
