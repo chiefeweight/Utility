@@ -70,6 +70,8 @@ public class Tests {
 		matrix_C.setElement(4, 3, 54);
 		matrix_C.setElement(4, 4, 4);
 		Matrix.print(Matrix.matrixMultiplication(matrix_C, Matrix.matrixInverse(matrix_C)));
+		System.out.println("==========================");
+		Matrix.print(Matrix.identityMatrix(4));
 	}
 
 	@Test
@@ -87,6 +89,10 @@ public class Tests {
 		System.out.println();
 		Vector.print(Vector.vectorSubtraction(vector_A, vector_B));
 		System.out.println(Vector.dotProduct(vector_A, vector_B));
+		Vector vector_C = new Vector(2);
+		vector_C.setCoordinate(1, 1);
+		vector_C.setCoordinate(2, 2);
+		System.out.println((Vector.norm(vector_C).subtract(BigDecimal.valueOf(1.0))).doubleValue() / 2);
 	}
 
 	/**

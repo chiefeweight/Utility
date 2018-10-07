@@ -7,12 +7,14 @@ public class Vector {
 	private BigDecimal[] coordinates;
 
 	private enum Operations {
-		Get_Set, Vector_Addition, Dot_Product
+		POSITIVE, GET_SET, VECTOR_ADDITION, DOT_PRODUCT
 	}
 
 	public Vector(int dimension) {
-		this.dimension = dimension;
-		this.coordinates = new BigDecimal[this.dimension];
+		if (checkDimension(dimension, 1, Operations.POSITIVE)) {
+			this.dimension = dimension;
+			this.coordinates = new BigDecimal[this.dimension];
+		}
 	}
 
 	public int getDimension() {
@@ -20,20 +22,20 @@ public class Vector {
 	}
 
 	public void setCoordinate(int coordinate_index, double coordinate) {
-		if (checkDimension(coordinate_index, this.getDimension(), Operations.Get_Set)) {
+		if (checkDimension(coordinate_index, this.getDimension(), Operations.GET_SET)) {
 			this.coordinates[coordinate_index - 1] = BigDecimal.valueOf(coordinate);
 		}
 	}
 
 	public void setCoordinate(int coordinate_index, BigDecimal coordinate) {
-		if (checkDimension(coordinate_index, this.getDimension(), Operations.Get_Set)) {
+		if (checkDimension(coordinate_index, this.getDimension(), Operations.GET_SET)) {
 			this.coordinates[coordinate_index - 1] = coordinate;
 		}
 	}
 
 	public BigDecimal getCoordinate(int coordinate_index) {
 		BigDecimal result = null;
-		if (checkDimension(coordinate_index, this.getDimension(), Operations.Get_Set)) {
+		if (checkDimension(coordinate_index, this.getDimension(), Operations.GET_SET)) {
 			result = this.coordinates[coordinate_index - 1];
 		}
 		return result;
@@ -53,7 +55,7 @@ public class Vector {
 	public static Vector vectorAddition(Vector vector_A, Vector vector_B) {
 		Vector result = null;
 		// 同型则可以做加法
-		if (checkDimension(vector_A.getDimension(), vector_B.getDimension(), Operations.Vector_Addition)) {
+		if (checkDimension(vector_A.getDimension(), vector_B.getDimension(), Operations.VECTOR_ADDITION)) {
 			result = new Vector(vector_A.getDimension());
 			for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
 				result.setCoordinate(coordinate_index, vector_A.getCoordinate(coordinate_index).add(vector_B.getCoordinate(coordinate_index)));
@@ -81,9 +83,12 @@ public class Vector {
 	 * @return num*vector
 	 */
 	public static Vector scalarMultiplication(BigDecimal num, Vector vector) {
-		Vector result = new Vector(vector.getDimension());
-		for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
-			result.setCoordinate(coordinate_index, vector.getCoordinate(coordinate_index).multiply(num));
+		Vector result = null;
+		if (checkDimension(vector.getDimension(), 1, Operations.POSITIVE)) {
+			result = new Vector(vector.getDimension());
+			for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
+				result.setCoordinate(coordinate_index, vector.getCoordinate(coordinate_index).multiply(num));
+			}
 		}
 		return result;
 	}
@@ -98,10 +103,18 @@ public class Vector {
 	public static BigDecimal dotProduct(Vector vector_A, Vector vector_B) {
 		BigDecimal result = new BigDecimal("0");
 		// 同型则可以做点乘
-		if (checkDimension(vector_A.getDimension(), vector_B.getDimension(), Operations.Dot_Product)) {
+		if (checkDimension(vector_A.getDimension(), vector_B.getDimension(), Operations.DOT_PRODUCT)) {
 			for (int coordinate_index = 1; coordinate_index <= vector_A.getDimension(); coordinate_index++) {
 				result = result.add(vector_A.getCoordinate(coordinate_index).multiply(vector_B.getCoordinate(coordinate_index)));
 			}
+		}
+		return result;
+	}
+
+	public static BigDecimal norm(Vector vector) {
+		BigDecimal result = null;
+		if (checkDimension(vector.getDimension(), 1, Operations.POSITIVE)) {
+			result = BigDecimal.valueOf(Math.sqrt(Vector.dotProduct(vector, vector).doubleValue()));
 		}
 		return result;
 	}
@@ -116,30 +129,48 @@ public class Vector {
 	 */
 	private static boolean checkDimension(int dimension_A, int dimension_B, Operations mode) {
 		boolean dimension_ok = false;
-		switch (mode) {
-		// 向量坐标操作：检查操作坐标是否在向量内
-		case Get_Set: {
-			if (dimension_A > 0 && dimension_A <= dimension_B) {
+		boolean dimension_A_ok = false;
+		boolean dimension_B_ok = false;
+		if (dimension_A > 0) {
+			dimension_A_ok = true;
+		} else {
+			System.out.println("dimension_A must be greater than 0");
+		}
+		if (dimension_B > 0) {
+			dimension_B_ok = true;
+		} else {
+			System.out.println("dimension_B must be greater than 0");
+		}
+		if (dimension_A_ok && dimension_B_ok) {
+			switch (mode) {
+			case POSITIVE: {
 				dimension_ok = true;
-			} else {
-				System.out.println("dimension out of bounds");
+				break;
 			}
-			break;
-		}
-		// 向量加法、点乘：检查两个向量是否同型
-		case Vector_Addition:
-		case Dot_Product: {
-			if (dimension_A == dimension_B) {
-				dimension_ok = true;
-			} else {
-				System.out.println("dimension_A not equals with dimension_B");
+			// 向量坐标操作：检查操作坐标是否在向量内
+			case GET_SET: {
+				if (dimension_A > 0 && dimension_A <= dimension_B) {
+					dimension_ok = true;
+				} else {
+					System.out.println("dimension out of bounds");
+				}
+				break;
 			}
-			break;
-		}
-		default: {
-			System.err.println("向量操作模式出错");
-			break;
-		}
+			// 向量加法、点乘：检查两个向量是否同型
+			case VECTOR_ADDITION:
+			case DOT_PRODUCT: {
+				if (dimension_A == dimension_B) {
+					dimension_ok = true;
+				} else {
+					System.out.println("dimension_A not equals with dimension_B");
+				}
+				break;
+			}
+			default: {
+				System.err.println("向量操作模式出错");
+				break;
+			}
+			}
 		}
 		return dimension_ok;
 	}
