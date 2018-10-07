@@ -93,6 +93,26 @@ public class Matrix {
 	}
 
 	/**
+	 * 返回单位矩阵
+	 * 
+	 * @param dimension
+	 * @return 单位矩阵
+	 */
+	public static Matrix identityMatrix(int dimension) {
+		Matrix result = new Matrix(dimension, dimension);
+		for (int row_index = 1; row_index <= result.getRowNum(); row_index++) {
+			for (int column_index = 1; column_index <= result.getColumnNum(); column_index++) {
+				if (row_index == column_index) {
+					result.setElement(row_index, column_index, 1.0);
+				} else {
+					result.setElement(row_index, column_index, 0.0);
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * 矩阵加法
 	 * 
 	 * @param matrix_A
@@ -194,8 +214,9 @@ public class Matrix {
 	 * @return det(matrix)
 	 */
 	public static BigDecimal det(Matrix matrix) {
-		BigDecimal result = new BigDecimal("0");
+		BigDecimal result = null;
 		if (checkDimension(matrix.getRowNum(), matrix.getColumnNum(), 1, 1, Operations.SQUARE_MATRIX)) {
+			result = new BigDecimal("0");
 			if (matrix.getRowNum() == 1) {
 				result = matrix.getElement(1, 1);
 			} else {
