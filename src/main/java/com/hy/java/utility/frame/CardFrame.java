@@ -49,6 +49,8 @@ import javax.swing.WindowConstants;
 public class CardFrame extends JFrame {
 	public static final int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width;
 	public static final int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height;
+	public static final int default_width = CardFrame.screen_width / 2;
+	public static final int default_height = CardFrame.screen_height / 2;
 	/**
 	 * generated serialVersionUID
 	 */
