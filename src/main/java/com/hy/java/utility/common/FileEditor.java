@@ -226,4 +226,13 @@ public class FileEditor {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 返回文件
+	 * 
+	 * @return file
+	 */
+	public File getFile() {
+		return this.file;
+	}
 }
