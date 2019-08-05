@@ -28,10 +28,8 @@ public class JarReader {
 	/**
 	 * 读取jar文件中特定文件的内容，以{@code byte[]}的形式返回
 	 *
-	 * @param jar_file_path
-	 *            jar文件的路径
-	 * @param resource_path
-	 *            jar文件中要读取的特定文件的路径
+	 * @param jar_file_path jar文件的路径
+	 * @param resource_path jar文件中要读取的特定文件的路径
 	 * @return 特定文件的内容，存在{@code byte[]}中
 	 */
 	public static byte[] readJARFile(String jar_file_path, String resource_path) {
@@ -61,8 +59,7 @@ public class JarReader {
 	/**
 	 * 获取jar文件中所有文件的列表，以{@code ArrayList<String>}的形式返回
 	 *
-	 * @param jar_file_path
-	 *            jar文件的路径
+	 * @param jar_file_path jar文件的路径
 	 * @return jarEntryList jar文件中所有文件的路径列表
 	 */
 	public static ArrayList<String> readJARList(String jar_file_path) {

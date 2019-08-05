@@ -14,12 +14,9 @@ public final class NormalDistribution {
 	/**
 	 * 返回一个服从正态分布N(mean,variance)的随机数；或返回一对服从联合正态分布的随机数
 	 * 
-	 * @param mean
-	 *            均值
-	 * @param variance
-	 *            方差
-	 * @param random_number_generator
-	 *            随机数发生器。如果为null，则默认使用{@code Random}产生种子
+	 * @param mean                    均值
+	 * @param variance                方差
+	 * @param random_number_generator 随机数发生器。如果为null，则默认使用{@code Random}产生种子
 	 */
 	public NormalDistribution(double mean, double variance, Random random_number_generator) {
 		if (variance < 0.0) {

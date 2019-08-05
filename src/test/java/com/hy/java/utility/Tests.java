@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import org.junit.Test;
 
 import com.hy.java.utility.common.FileEditor;
+import com.hy.java.utility.common.JarReader;
 import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.common.Traverser;
 import com.hy.java.utility.frame.CardFrame;
@@ -293,5 +294,12 @@ public class Tests {
 			FileEditor f = new FileEditor(s);
 			System.out.println(f.readFileToString("gbk"));
 		}
+	}
+	
+	@Test
+	public void jar_test() {
+		for(String s:JarReader.currentProperties()) {
+			System.out.println(s);
+		}		
 	}
 }

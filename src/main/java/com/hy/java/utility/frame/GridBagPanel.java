@@ -29,9 +29,10 @@ import javax.swing.JPanel;
  */
 public class GridBagPanel extends JPanel {
 	/**
-	 * Specifies that this component is the next-to-last component in its column or row
-	 * (<code>gridwidth</code>, <code>gridheight</code>), or that this component be placed next to the
-	 * previously added component ( <code>gridx</code>, <code>gridy</code>).
+	 * Specifies that this component is the next-to-last component in its column or
+	 * row (<code>gridwidth</code>, <code>gridheight</code>), or that this component
+	 * be placed next to the previously added component ( <code>gridx</code>,
+	 * <code>gridy</code>).
 	 * 
 	 * @see java.awt.GridBagConstraints#gridwidth
 	 * @see java.awt.GridBagConstraints#gridheight
@@ -51,8 +52,7 @@ public class GridBagPanel extends JPanel {
 	/**
 	 * {@code GridBagPanel}的构造法。
 	 * 
-	 * @param panel_obj_name
-	 *            这个panel在其所属{@code CardFrame}中的标识。
+	 * @param panel_obj_name 这个panel在其所属{@code CardFrame}中的标识。
 	 */
 	public GridBagPanel(String panel_obj_name) {
 		this.setName(panel_obj_name);
@@ -65,24 +65,15 @@ public class GridBagPanel extends JPanel {
 	/**
 	 * 设置组件的标识（名字）、位置、大小及拉伸程度
 	 * 
-	 * @param comp
-	 *            组件
-	 * @param comp_obj_name
-	 *            组件对象在其所属{@code GridBagPanel}中的标识（即名字），不是这个组件显示的文本
-	 * @param row
-	 *            组件所在行
-	 * @param column
-	 *            组件所在列
-	 * @param gridwidth
-	 *            组件宽度占的格子数
-	 * @param gridheight
-	 *            组件高度占的格子数
-	 * @param weightx
-	 *            组件所占格子的横向拉伸系数。如果为0，则组件所占格子不跟随窗口横向拉伸；如果不为0，则组件所占格子跟随窗口横向拉伸，且拉伸时组件所占格子保持其在该行的拉伸比例。
-	 * @param weighty
-	 *            组件所占格子的纵向拉伸系数。如果为0，则组件所占格子不跟随窗口纵向拉伸；如果不为0，则组件所占格子跟随窗口纵向拉伸，且拉伸时组件所占格子保持其在该列的拉伸比例。
-	 * @param fill
-	 *            组件是否填充所占格子。true填充，false不填充
+	 * @param comp          组件
+	 * @param comp_obj_name 组件对象在其所属{@code GridBagPanel}中的标识（即名字），不是这个组件显示的文本
+	 * @param row           组件所在行
+	 * @param column        组件所在列
+	 * @param gridwidth     组件宽度占的格子数
+	 * @param gridheight    组件高度占的格子数
+	 * @param weightx       组件所占格子的横向拉伸系数。如果为0，则组件所占格子不跟随窗口横向拉伸；如果不为0，则组件所占格子跟随窗口横向拉伸，且拉伸时组件所占格子保持其在该行的拉伸比例。
+	 * @param weighty       组件所占格子的纵向拉伸系数。如果为0，则组件所占格子不跟随窗口纵向拉伸；如果不为0，则组件所占格子跟随窗口纵向拉伸，且拉伸时组件所占格子保持其在该列的拉伸比例。
+	 * @param fill          组件是否填充所占格子。true填充，false不填充
 	 * @see java.awt.GridBagConstraints#gridy
 	 * @see java.awt.GridBagConstraints#gridx
 	 * @see java.awt.GridBagConstraints#gridwidth
@@ -117,8 +108,7 @@ public class GridBagPanel extends JPanel {
 	/**
 	 * 根据comp_obj_name，返回组件
 	 * 
-	 * @param comp_obj_name
-	 *            组件的comp_obj_name
+	 * @param comp_obj_name 组件的comp_obj_name
 	 * @return 组件。如果该{@code GridBagPanel}中不包含comp_obj_name，则返回{@code null}
 	 */
 	public Component getComponent(String comp_obj_name) {
