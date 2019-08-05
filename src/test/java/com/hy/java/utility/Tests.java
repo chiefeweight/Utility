@@ -4,6 +4,8 @@ import java.awt.Dialog;
 import java.awt.Graphics;
 import java.awt.TextArea;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -14,6 +16,7 @@ import java.util.concurrent.FutureTask;
 
 import javax.swing.JFrame;
 
+import org.dom4j.Document;
 import org.junit.Test;
 
 import com.hy.java.utility.common.FileEditor;
@@ -22,6 +25,7 @@ import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.common.Traverser;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.frame.GridBagPanel;
+import com.hy.java.utility.http.HttpUtil;
 import com.hy.java.utility.math.Matrix;
 import com.hy.java.utility.math.NormalDistribution;
 import com.hy.java.utility.math.Vector;
@@ -33,6 +37,15 @@ public class Tests {
 		Tests t = new Tests();
 		// t.frame_test(-10.0, 5555.0, 5000000);
 		t.world_frame();
+	}
+
+	@Test
+	public void html_test() {
+		System.out.print(HttpUtil.getString("https://www.baidu.com"));
+		// HttpUtil.saveFile("http://www.worlduc.com/UploadFiles/BlogFile/643/19345149/libsvm.pdf",
+		// "F:\\1");
+		// Document d = HttpUtil.getXML("https://dom4j.github.io/#string-conversion");
+		// System.out.print(d.asXML());
 	}
 
 	@Test
@@ -295,11 +308,11 @@ public class Tests {
 			System.out.println(f.readFileToString("gbk"));
 		}
 	}
-	
+
 	@Test
 	public void jar_test() {
-		for(String s:JarReader.currentProperties()) {
+		for (String s : JarReader.currentProperties()) {
 			System.out.println(s);
-		}		
+		}
 	}
 }
