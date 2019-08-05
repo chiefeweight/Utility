@@ -23,12 +23,12 @@ import org.apache.commons.io.IOUtils;
  */
 public class FileEditor {
 	private File file;
+	boolean file_available = true;
 
 	/**
 	 * 构造新的{@code FileEditor}，可实现对file_path所指文件的读、写操作
 	 * 
-	 * @param file_path
-	 *            目标文件路径。构造法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
+	 * @param file_path 目标文件路径。构造法会自动将路径中的非法字符（“*”、“?”、“<”、“>”）替换为“_”。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public FileEditor(String file_path) {
 		file_path = file_path.replaceAll("\\*", "_").replaceAll("\\?", "_").replaceAll("<", "_").replaceAll(">", "_");
@@ -38,8 +38,7 @@ public class FileEditor {
 	/**
 	 * 构造新的{@code FileEditor}，可实现对file所指文件的读、写操作
 	 * 
-	 * @param file
-	 *            目标文件。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
+	 * @param file 目标文件。如果目标文件的目录在文件系统中不存在，构造法会自动创建目录
 	 */
 	public FileEditor(File file) {
 		init(file);
@@ -58,31 +57,30 @@ public class FileEditor {
 	}
 
 	private boolean fileIsReady() {
-		boolean file_available = true;
 		if (this.file.exists()) {
 			if (this.file.isDirectory()) {
 				System.out.println("File '" + this.file + "' exists but is a directory");
-				file_available = false;
+				this.file_available = false;
 			}
 			if (this.file.canWrite() == false) {
 				System.out.println("File '" + this.file + "' cannot be written to");
-				file_available = false;
+				this.file_available = false;
 			}
 		} else {
 			/*
 			 * 如果目标文件指明了父路径，而父路径在文件系统中不存在，则创建父路径
 			 */
 			File parent = this.file.getParentFile();
-			if (parent != null && parent.exists() == false) {
+			if (parent != null && !parent.exists()) {
 				if (parent.mkdirs() == false) {
 					System.out.println("File '" + this.file + "' could not be created");
-					file_available = false;
+					this.file_available = false;
 				} else {
 					System.out.println("Directories were created: " + parent.getAbsolutePath());
 				}
 			}
 		}
-		return file_available;
+		return this.file_available;
 	}
 
 	/**
@@ -166,10 +164,8 @@ public class FileEditor {
 	/**
 	 * 向文件中写入二进制数据。
 	 * 
-	 * @param bytes
-	 *            要写入的二进制数组数据
-	 * @param append
-	 *            是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
+	 * @param bytes  要写入的二进制数组数据
+	 * @param append 是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
 	 */
 	public void write(byte[] bytes, boolean append) {
 		OutputStream output_stream = null;
@@ -192,10 +188,8 @@ public class FileEditor {
 	/**
 	 * 向文件中写入{@code String}
 	 *
-	 * @param str
-	 *            要写入的{@code String}
-	 * @param append
-	 *            是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
+	 * @param str    要写入的{@code String}
+	 * @param append 是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
 	 * @throws IOException
 	 */
 	public void write(String str, boolean append) {
@@ -205,10 +199,8 @@ public class FileEditor {
 	/**
 	 * 向文件中写入数据。数据以{@code InputStream}的形式封存
 	 *
-	 * @param input_stream
-	 *            封存着要写入的数据
-	 * @param append
-	 *            是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
+	 * @param input_stream 封存着要写入的数据
+	 * @param append 是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
 	 */
 	public void write(InputStream input_stream, boolean append) {
 		try {

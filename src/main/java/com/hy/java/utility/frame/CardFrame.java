@@ -110,12 +110,9 @@ public class CardFrame extends JFrame {
 	/**
 	 * 向菜单栏中添加菜单，即向{@code JMenuBar}中添加{@code JMenu}。
 	 * 
-	 * @param jMenu
-	 *            要添加的菜单
-	 * @param menu_obj_name
-	 *            所添加菜单在其所属{@code CardFrame}中的标识，不是这个菜单显示的文本。
-	 * @param index
-	 *            所添加菜单是从左数第几个。输入范围≥1。
+	 * @param jMenu         要添加的菜单
+	 * @param menu_obj_name 所添加菜单在其所属{@code CardFrame}中的标识，不是这个菜单显示的文本。
+	 * @param index         所添加菜单是从左数第几个。输入范围≥1。
 	 */
 	public void addJMenu(JMenu jMenu, String menu_obj_name, int index) {
 		if (!this.menu_map.containsKey(menu_obj_name)) {
@@ -130,8 +127,7 @@ public class CardFrame extends JFrame {
 	/**
 	 * 向{@code CardFrame}中添加{@code GridBagPanel}。
 	 * 
-	 * @param gridBagPanel
-	 *            要添加的<code>gridBagPanel</code>
+	 * @param gridBagPanel 要添加的<code>gridBagPanel</code>
 	 */
 	public void addGridBagPanel(GridBagPanel gridBagPanel) {
 		String panel_obj_name = gridBagPanel.getName();
@@ -147,8 +143,7 @@ public class CardFrame extends JFrame {
 	/**
 	 * 设置Help Contents菜单项对应的{@code JFrame}。
 	 * 
-	 * @param frame
-	 *            Help Contents菜单项对应的<code>frame</code>
+	 * @param frame Help Contents菜单项对应的<code>frame</code>
 	 */
 	public void setHelpContents(JFrame frame) {
 		this.help_menu_item_Help_Contents.addActionListener(new HelpContentsListener(frame));
@@ -182,8 +177,7 @@ public class CardFrame extends JFrame {
 	/**
 	 * 设置About菜单项对应的{@code Dialog}。
 	 * 
-	 * @param dialog
-	 *            About菜单项对应的<code>dialog</code>
+	 * @param dialog About菜单项对应的<code>dialog</code>
 	 */
 	public void setAbout(Dialog dialog) {
 		this.help_menu_item_About.addActionListener(new AboutListener(dialog));
@@ -223,8 +217,7 @@ public class CardFrame extends JFrame {
 	/**
 	 * 根据menu_obj_name，返回菜单
 	 * 
-	 * @param menu_obj_name
-	 *            菜单的menu_obj_name
+	 * @param menu_obj_name 菜单的menu_obj_name
 	 * @return 菜单。如果该{@code CardFrame}中不包含menu_obj_name，则返回{@code null}
 	 */
 	public JMenu getMenu(String menu_obj_name) {
@@ -238,8 +231,7 @@ public class CardFrame extends JFrame {
 	/**
 	 * 根据panel_obj_name，返回面板
 	 * 
-	 * @param panel_obj_name
-	 *            面板的panel_obj_name
+	 * @param panel_obj_name 面板的panel_obj_name
 	 * @return 面板。如果该{@code CardFrame}中不包含panel_obj_name，则返回{@code null}
 	 */
 	public GridBagPanel getGridBagPanel(String panel_obj_name) {
@@ -262,8 +254,7 @@ public class CardFrame extends JFrame {
 	/**
 	 * 切换到目标gridBagPanel
 	 * 
-	 * @param gridBagPanel
-	 *            目标gridBagPanel
+	 * @param gridBagPanel 目标gridBagPanel
 	 */
 	public void switchTo(Object gridBagPanel) {
 		Container contentPane = this.getContentPane();
