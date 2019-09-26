@@ -61,6 +61,6 @@ public final class NormalDistribution {
 		double rnd2 = this.rnd_generator2.nextDouble();
 		double x = r * Math.cos(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
 		double y = r * Math.sin(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
-		return Pair.createPair(new Double(x), new Double(y));
+		return Pair.createPair(Double.valueOf(x), Double.valueOf(y));
 	}
 }
