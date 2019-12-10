@@ -82,8 +82,8 @@ public class GridBagPanel extends JPanel {
 	 * @see java.awt.GridBagConstraints#weighty
 	 * @see java.awt.GridBagConstraints#fill
 	 */
-	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight,
-			double weightx, double weighty, boolean fill) {
+	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty,
+			boolean fill) {
 		if (!this.component_map.containsKey(comp_obj_name)) {
 			comp.setName(comp_obj_name);
 			this.grid_bag_constraints.gridy = row - 1;
@@ -118,5 +118,12 @@ public class GridBagPanel extends JPanel {
 			result = this.component_map.get(comp_obj_name);
 		}
 		return result;
+	}
+
+	@Override
+	public void removeAll() {
+		// TODO Auto-generated method stub
+		super.removeAll();
+		this.component_map.clear();
 	}
 }
