@@ -23,6 +23,7 @@ import com.hy.java.utility.common.FileEditor;
 import com.hy.java.utility.common.JarReader;
 import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.common.Traverser;
+import com.hy.java.utility.common.Traverser.FileNode;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.frame.GridBagPanel;
 import com.hy.java.utility.http.HttpUtil;
@@ -301,11 +302,13 @@ public class Tests {
 
 	@Test
 	public void file_test() {
-		List<String> t = new ArrayList<>();
-		Traverser.traverseDir("K:\\1", t);
-		for (String s : t) {
-			FileEditor f = new FileEditor(s);
-			System.out.println(f.readFileToString("gbk"));
+		FileNode t = Traverser.traverseDir("J:\\1\\1.1\\1.1.2.txt");
+		System.out.println("=============");
+		System.out.println(t.parent_path);
+		if (t.children != null) {
+			for (FileNode s : t.children) {
+				System.out.println(s.path + " " + s.parent_path);
+			}
 		}
 	}
 

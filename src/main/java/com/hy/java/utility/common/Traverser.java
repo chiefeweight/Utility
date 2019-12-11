@@ -1,36 +1,57 @@
 package com.hy.java.utility.common;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Traverser {
-	public static List<String> traverseDir(String path, List<String> result) {
-		File file_or_dir = new File(path);
-		if (file_or_dir.exists()) {
-			if (file_or_dir.isDirectory()) {
-				File[] subFiles_or_subDirs = file_or_dir.listFiles();
-				if (subFiles_or_subDirs == null) {
-					System.out.println("无权访问文件夹: " + file_or_dir);
-				} else if (subFiles_or_subDirs.length == 0) {
-					System.out.println("文件夹是空的: " + file_or_dir);
+	/*
+	 * 如果path指向文件，则返回的Node包含该文件的path
+	 * 
+	 * 如果path指向文件夹，则返回的Node包含该文件夹的path，且children包含该文件夹下的所有文件/文件夹
+	 */
+	public static FileNode traverseDir(String path) {
+		FileNode result = null;
+		File dir_or_file = new File(path);
+		if (dir_or_file.exists()) {
+			result = new FileNode(dir_or_file.getAbsolutePath());
+			if (!dir_or_file.isDirectory()) {
+				System.out.println("文件: " + result.path);
+			} else {
+				System.out.println("文件夹: " + result.path);
+				File[] subDirs_or_subFiles = dir_or_file.listFiles();
+				if (subDirs_or_subFiles == null) {
+					System.out.println("无权访问文件夹: " + result.path);
 				} else {
-					for (File subFile_or_subDir : subFiles_or_subDirs) {
-						if (subFile_or_subDir.isDirectory()) {
-							System.out.println("文件夹: " + subFile_or_subDir.getAbsolutePath());
-							traverseDir(subFile_or_subDir.getAbsolutePath(), result);
-						} else {
-							System.out.println("文件: " + subFile_or_subDir.getAbsolutePath());
-							result.add(subFile_or_subDir.getAbsolutePath());
-						}
+					result.children = new ArrayList<>();
+					for (File subDir_or_subFile : subDirs_or_subFiles) {
+						result.children.add(Traverser.traverseDir(subDir_or_subFile.getAbsolutePath()));
 					}
 				}
-			} else {
-				System.out.println("文件: " + file_or_dir.getAbsolutePath());
-				result.add(file_or_dir.getAbsolutePath());
 			}
 		} else {
-			System.out.println("目录不存在: " + file_or_dir);
+			System.out.println("目录不存在: " + dir_or_file);
 		}
 		return result;
+	}
+
+	public static class FileNode {
+		public String path;
+		public String parent_path = null;
+		public List<FileNode> children = null;
+
+		public FileNode(String path) {
+			this.path = path;
+			if (this.path.split("\\\\").length >= 2) {
+				StringBuilder sb = new StringBuilder(this.path);
+				int i = sb.lastIndexOf("\\");
+				while (i < sb.length()) {
+					sb.deleteCharAt(i);
+				}
+				this.parent_path = sb.toString();
+			} else {
+				System.out.println("没有上级目录: " + this.path);
+			}
+		}
 	}
 }
