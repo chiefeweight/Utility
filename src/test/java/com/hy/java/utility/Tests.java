@@ -304,10 +304,12 @@ public class Tests {
 	public void file_test() {
 		FileNode t = Traverser.traverseDir("J:\\1\\1.1\\1.1.2.txt");
 		System.out.println("=============");
-		System.out.println(t.parent_path);
-		if (t.children != null) {
-			for (FileNode s : t.children) {
-				System.out.println(s.path + " " + s.parent_path);
+		if (t != null) {
+			System.out.println(t.parent_path);
+			if (t.children != null) {
+				for (FileNode s : t.children) {
+					System.out.println(s.path + " " + s.parent_path);
+				}
 			}
 		}
 	}
