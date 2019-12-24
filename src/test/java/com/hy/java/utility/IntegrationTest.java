@@ -3,9 +3,8 @@ package com.hy.java.utility;
 import java.awt.Dialog;
 import java.awt.Graphics;
 import java.awt.TextArea;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -14,100 +13,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import org.dom4j.Document;
-import org.junit.Test;
-
-import com.hy.java.utility.common.FileEditor;
-import com.hy.java.utility.common.JarReader;
 import com.hy.java.utility.common.SystemTime;
-import com.hy.java.utility.common.Traverser;
-import com.hy.java.utility.common.Traverser.FileNode;
 import com.hy.java.utility.frame.CardFrame;
 import com.hy.java.utility.frame.GridBagPanel;
-import com.hy.java.utility.http.HttpUtil;
-import com.hy.java.utility.math.Matrix;
 import com.hy.java.utility.math.NormalDistribution;
-import com.hy.java.utility.math.Vector;
 
-public class Tests {
+public class IntegrationTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Tests t = new Tests();
-		// t.frame_test(-10.0, 5555.0, 5000000);
-		t.world_frame();
-	}
-
-	@Test
-	public void html_test() {
-		System.out.print(HttpUtil.getString("https://www.baidu.com"));
-		// HttpUtil.saveFile("http://www.worlduc.com/UploadFiles/BlogFile/643/19345149/libsvm.pdf",
-		// "F:\\1");
-		// Document d = HttpUtil.getXML("https://dom4j.github.io/#string-conversion");
-		// System.out.print(d.asXML());
-	}
-
-	@Test
-	public void matrix() {
-		Matrix matrix_A = new Matrix(2, 3);
-		matrix_A.setElement(1, 1, 0);
-		matrix_A.setElement(1, 2, -1);
-		matrix_A.setElement(1, 3, -2);
-		matrix_A.setElement(2, 1, 2);
-		matrix_A.setElement(2, 2, 3);
-		matrix_A.setElement(2, 3, 1);
-		Matrix matrix_B = Matrix.numMultiplication(BigDecimal.valueOf(-2), matrix_A);
-		Matrix.print(matrix_A);
-		System.out.println();
-		Matrix.print(matrix_B);
-		System.out.println();
-		Matrix.print(Matrix.matrixAddition(matrix_A, matrix_B));
-		System.out.println();
-		Matrix.print(Matrix.matrixSubtraction(matrix_A, matrix_B));
-		System.out.println("==========================");
-		Matrix matrix_C = new Matrix(4, 4);
-		matrix_C.setElement(1, 1, 22);
-		matrix_C.setElement(1, 2, 4);
-		matrix_C.setElement(1, 3, 4);
-		matrix_C.setElement(1, 4, 23);
-		matrix_C.setElement(2, 1, 3);
-		matrix_C.setElement(2, 2, 3);
-		matrix_C.setElement(2, 3, 2);
-		matrix_C.setElement(2, 4, 6);
-		matrix_C.setElement(3, 1, 1);
-		matrix_C.setElement(3, 2, 23);
-		matrix_C.setElement(3, 3, 2);
-		matrix_C.setElement(3, 4, 2);
-		matrix_C.setElement(4, 1, 3);
-		matrix_C.setElement(4, 2, 4);
-		matrix_C.setElement(4, 3, 54);
-		matrix_C.setElement(4, 4, 4);
-		Matrix.print(Matrix.matrixMultiplication(matrix_C, Matrix.matrixInverse(matrix_C)));
-		System.out.println("==========================");
-		Matrix.print(Matrix.identityMatrix(4));
-	}
-
-	@Test
-	public void vector() {
-		Vector vector_A = new Vector(3);
-		vector_A.setCoordinate(1, 1);
-		vector_A.setCoordinate(2, 2);
-		vector_A.setCoordinate(3, -3);
-		Vector vector_B = Vector.scalarMultiplication(BigDecimal.valueOf(-2), vector_A);
-		Vector.print(vector_A);
-		System.out.println();
-		Vector.print(vector_B);
-		System.out.println();
-		Vector.print(Vector.vectorAddition(vector_A, vector_B));
-		System.out.println();
-		Vector.print(Vector.vectorSubtraction(vector_A, vector_B));
-		System.out.println(Vector.dotProduct(vector_A, vector_B));
-		Vector vector_C = new Vector(2);
-		vector_C.setCoordinate(1, 1);
-		vector_C.setCoordinate(2, 2);
-		System.out.println((Vector.norm(vector_C).subtract(BigDecimal.valueOf(1.0))).doubleValue() / 2);
+		IntegrationTest integration_test = new IntegrationTest();
+		integration_test.draw_nd(-10.0, 5555.0, 5000000);
+		integration_test.world_frame();
 	}
 
 	/**
@@ -181,31 +101,7 @@ public class Tests {
 		card_frame.setAbout(about_dialog);
 	}
 
-	class SampleUnit implements Callable<String> {
-		private String task_index;
-		private GridBagPanel panel;
-		private String name;
-
-		SampleUnit(String task_index, GridBagPanel panel, String name) {
-			this.task_index = task_index;
-			this.panel = panel;
-			this.name = name;
-		}
-
-		@Override
-		public String call() throws Exception {
-			// TODO Auto-generated method stub
-			TextArea ta = (TextArea) this.panel.getComponent(this.name);
-			long start_time = SystemTime.currentTimeMillis();
-			ta.append("任务" + task_index + "于" + SystemTime.formatTime(start_time) + "启动\n");
-			Thread.sleep(1000 * 3);
-			long end_time = SystemTime.currentTimeMillis();
-			ta.append("\t\t\t\t" + "任务" + task_index + "于" + SystemTime.formatTime(end_time) + "终止\n");
-			return "任务" + task_index + "返回运行结果，执行时间为" + (end_time - start_time) + "毫秒";
-		}
-	}
-
-	private void frame_test(final double mean, final double variance, final int size) {
+	private void draw_nd(final double mean, final double variance, final int size) {
 		final CardFrame card_frame = new CardFrame("Test", 800, 600);
 		// panel
 		GridBagPanel panel = new GridBagPanel("panel") {
@@ -224,7 +120,7 @@ public class Tests {
 				// Y轴
 				graphics.drawLine(card_frame.getWidth() / 2, 0, card_frame.getWidth() / 2, card_frame.getHeight());
 				// 生成正态分布随机数
-				double[] nums = Tests.this.randomND(mean, variance, size);
+				double[] nums = IntegrationTest.this.randomND(mean, variance, size);
 				// 找出样本最小值、最大值
 				double min = 0;
 				double max = 0;
@@ -266,7 +162,30 @@ public class Tests {
 				}
 			}
 		};
+		// 做一个新panel，测试切换
+		GridBagPanel panel2 = new GridBagPanel("panel2");
+		JButton b = new JButton("2");
+		panel2.addComponent(b, "button1", 1, 1, 1, 1, 1, 1, true);
+		// 向frame中添加panel
 		card_frame.addGridBagPanel(panel);
+		card_frame.addGridBagPanel(panel2);
+		// 添加点击切换事件
+		panel.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				card_frame.switchTo("panel2");
+			}
+		});
+		b.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				card_frame.switchTo(panel);
+			}
+		});
 		// help
 		JFrame help_frame = new JFrame("Help");
 		card_frame.setHelpContents(help_frame);
@@ -294,30 +213,27 @@ public class Tests {
 		return result;
 	}
 
-	@Test
-	public void time_test() {
-		// TODO Auto-generated method stub
-		System.out.println(SystemTime.currentFormattedTime());
-	}
+	class SampleUnit implements Callable<String> {
+		private String task_index;
+		private GridBagPanel panel;
+		private String name;
 
-	@Test
-	public void file_test() {
-		FileNode t = Traverser.traverseDir("J:\\1\\1.1\\1.1.2.txt");
-		System.out.println("=============");
-		if (t != null) {
-			System.out.println(t.parent_path);
-			if (t.children != null) {
-				for (FileNode s : t.children) {
-					System.out.println(s.path + " " + s.parent_path);
-				}
-			}
+		SampleUnit(String task_index, GridBagPanel panel, String name) {
+			this.task_index = task_index;
+			this.panel = panel;
+			this.name = name;
 		}
-	}
 
-	@Test
-	public void jar_test() {
-		for (String s : JarReader.currentProperties()) {
-			System.out.println(s);
+		@Override
+		public String call() throws Exception {
+			// TODO Auto-generated method stub
+			TextArea ta = (TextArea) panel.getComponent(name);
+			long start_time = SystemTime.currentTimeMillis();
+			ta.append("任务" + task_index + "于" + SystemTime.formatTime(start_time) + "启动\n");
+			Thread.sleep(1000 * 3);
+			long end_time = SystemTime.currentTimeMillis();
+			ta.append("\t\t\t\t" + "任务" + task_index + "于" + SystemTime.formatTime(end_time) + "终止\n");
+			return "任务" + task_index + "返回运行结果，执行时间为" + (end_time - start_time) + "毫秒";
 		}
 	}
 }

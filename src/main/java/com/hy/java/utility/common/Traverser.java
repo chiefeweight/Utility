@@ -48,7 +48,7 @@ public class Traverser {
 				while (i < sb.length()) {
 					sb.deleteCharAt(i);
 				}
-				this.parent_path = sb.toString();
+				parent_path = sb.toString();
 			} else {
 				System.out.println("没有上级目录: " + this.path);
 			}

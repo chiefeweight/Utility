@@ -24,12 +24,12 @@ public final class NormalDistribution {
 		}
 		this.mean = mean;
 		this.variance = variance;
-		this.standard_deviation = Math.sqrt(this.variance);
+		standard_deviation = Math.sqrt(this.variance);
 		if (random_number_generator == null) {
 			random_number_generator = new Random();
 		}
-		this.rnd_generator1 = random_number_generator;
-		this.rnd_generator2 = random_number_generator;
+		rnd_generator1 = random_number_generator;
+		rnd_generator2 = random_number_generator;
 	}
 
 	/**
@@ -40,11 +40,11 @@ public final class NormalDistribution {
 	public double nextRandom() {
 		double rnd1 = 0.0;
 		while (rnd1 == 0.0) {
-			rnd1 = this.rnd_generator1.nextDouble();
+			rnd1 = rnd_generator1.nextDouble();
 		}
 		double r = Math.sqrt(-2.0 * Math.log(rnd1));
-		double rnd2 = this.rnd_generator2.nextDouble();
-		return r * Math.cos(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
+		double rnd2 = rnd_generator2.nextDouble();
+		return r * Math.cos(2.0 * Math.PI * rnd2) * standard_deviation + mean;
 	}
 
 	/**
@@ -58,9 +58,9 @@ public final class NormalDistribution {
 			rnd1 = rnd_generator1.nextDouble();
 		}
 		double r = Math.sqrt(-2.0 * Math.log(rnd1));
-		double rnd2 = this.rnd_generator2.nextDouble();
-		double x = r * Math.cos(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
-		double y = r * Math.sin(2.0 * Math.PI * rnd2) * this.standard_deviation + this.mean;
+		double rnd2 = rnd_generator2.nextDouble();
+		double x = r * Math.cos(2.0 * Math.PI * rnd2) * standard_deviation + mean;
+		double y = r * Math.sin(2.0 * Math.PI * rnd2) * standard_deviation + mean;
 		return Pair.createPair(Double.valueOf(x), Double.valueOf(y));
 	}
 }
