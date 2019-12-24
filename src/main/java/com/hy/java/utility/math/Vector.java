@@ -13,36 +13,36 @@ public class Vector {
 	public Vector(int dimension) {
 		if (checkDimension(dimension, 1, Operations.POSITIVE)) {
 			this.dimension = dimension;
-			this.coordinates = new BigDecimal[this.dimension];
+			coordinates = new BigDecimal[this.dimension];
 		}
 	}
 
 	public int getDimension() {
-		return this.dimension;
+		return dimension;
 	}
 
 	public void setCoordinate(int coordinate_index, double coordinate) {
-		if (checkDimension(coordinate_index, this.getDimension(), Operations.GET_SET)) {
-			this.coordinates[coordinate_index - 1] = BigDecimal.valueOf(coordinate);
+		if (checkDimension(coordinate_index, getDimension(), Operations.GET_SET)) {
+			coordinates[coordinate_index - 1] = BigDecimal.valueOf(coordinate);
 		}
 	}
 
 	public void setCoordinate(int coordinate_index, BigDecimal coordinate) {
-		if (checkDimension(coordinate_index, this.getDimension(), Operations.GET_SET)) {
-			this.coordinates[coordinate_index - 1] = coordinate;
+		if (checkDimension(coordinate_index, getDimension(), Operations.GET_SET)) {
+			coordinates[coordinate_index - 1] = coordinate;
 		}
 	}
 
 	public BigDecimal getCoordinate(int coordinate_index) {
 		BigDecimal result = null;
-		if (checkDimension(coordinate_index, this.getDimension(), Operations.GET_SET)) {
-			result = this.coordinates[coordinate_index - 1];
+		if (checkDimension(coordinate_index, getDimension(), Operations.GET_SET)) {
+			result = coordinates[coordinate_index - 1];
 		}
 		return result;
 	}
 
 	public BigDecimal[] getCoordinates() {
-		return this.coordinates;
+		return coordinates;
 	}
 
 	/**

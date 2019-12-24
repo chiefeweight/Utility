@@ -69,42 +69,42 @@ public class CardFrame extends JFrame {
 	 * <code>width</code>和<code>height</code>的单位均为像素。
 	 */
 	public CardFrame(String title, int width, int height) {
-		this.menu_map = new HashMap<>();
-		this.panel_map = new HashMap<>();
+		menu_map = new HashMap<>();
+		panel_map = new HashMap<>();
 		/* 初始化窗口 */
-		this.initFrame(title, width, height);
+		initFrame(title, width, height);
 		/* 初始化菜单栏 */
-		this.initJMenuBar(title);
+		initJMenuBar(title);
 		/* 最后设置可见 */
-		this.setVisible(true);
+		setVisible(true);
 	}
 
 	private void initFrame(String title, int width, int height) {
-		this.setTitle(title);
-		this.setSize(width, height);
-		this.setLocation((CardFrame.screen_width - width) / 2, (CardFrame.screen_height - height) / 2);
-		this.card_layout = new CardLayout();
-		this.setLayout(this.card_layout);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle(title);
+		setSize(width, height);
+		setLocation((CardFrame.screen_width - width) / 2, (CardFrame.screen_height - height) / 2);
+		card_layout = new CardLayout();
+		setLayout(card_layout);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	private void initJMenuBar(String title) {
 		// 菜单栏
-		this.menubar = new JMenuBar();
-		this.setJMenuBar(this.menubar);
+		menubar = new JMenuBar();
+		setJMenuBar(menubar);
 		// "Help"菜单
-		this.help_menu = new JMenu("Help");
-		this.help_menu.setName("help_menu");
-		this.addJMenu(this.help_menu, this.help_menu.getName(), 0);
+		help_menu = new JMenu("Help");
+		help_menu.setName("help_menu");
+		addJMenu(this.help_menu, this.help_menu.getName(), 0);
 		// "Help Contents"菜单项
-		this.help_menu_item_Help_Contents = new JMenuItem("Help Contents");
-		this.help_menu_item_Help_Contents.setName("help_menu_item_Help_Contents");
-		this.help_menu.add(this.help_menu_item_Help_Contents, 0);
-		this.help_menu.addSeparator();
+		help_menu_item_Help_Contents = new JMenuItem("Help Contents");
+		help_menu_item_Help_Contents.setName("help_menu_item_Help_Contents");
+		help_menu.add(help_menu_item_Help_Contents, 0);
+		help_menu.addSeparator();
 		// "About"菜单项
-		this.help_menu_item_About = new JMenuItem("About " + title);
-		this.help_menu_item_About.setName("help_menu_item_About");
-		this.help_menu.add(this.help_menu_item_About, -1);
+		help_menu_item_About = new JMenuItem("About " + title);
+		help_menu_item_About.setName("help_menu_item_About");
+		help_menu.add(help_menu_item_About, -1);
 	}
 
 	/**
@@ -115,10 +115,10 @@ public class CardFrame extends JFrame {
 	 * @param index         所添加菜单是从左数第几个。输入范围≥1。
 	 */
 	public void addJMenu(JMenu jMenu, String menu_obj_name, int index) {
-		if (!this.menu_map.containsKey(menu_obj_name)) {
+		if (!menu_map.containsKey(menu_obj_name)) {
 			jMenu.setName(menu_obj_name);
-			this.menubar.add(jMenu, jMenu.getName(), index - 1);
-			this.menu_map.put(jMenu.getName(), jMenu);
+			menubar.add(jMenu, jMenu.getName(), index - 1);
+			menu_map.put(jMenu.getName(), jMenu);
 		} else {
 			System.out.println(menu_obj_name + "已存在，该菜单添加失败。请给菜单对象重起menu_obj_name");
 		}
@@ -131,10 +131,10 @@ public class CardFrame extends JFrame {
 	 */
 	public void addGridBagPanel(GridBagPanel gridBagPanel) {
 		String panel_obj_name = gridBagPanel.getName();
-		if (!this.panel_map.containsKey(panel_obj_name)) {
-			this.add(gridBagPanel, panel_obj_name);
-			this.panel_map.put(panel_obj_name, gridBagPanel);
-			this.validate();
+		if (!panel_map.containsKey(panel_obj_name)) {
+			add(gridBagPanel, panel_obj_name);
+			panel_map.put(panel_obj_name, gridBagPanel);
+			validate();
 		} else {
 			System.out.println(panel_obj_name + "已存在，该面板添加失败。请给面板对象重起panel_obj_name");
 		}
@@ -146,7 +146,7 @@ public class CardFrame extends JFrame {
 	 * @param frame Help Contents菜单项对应的<code>frame</code>
 	 */
 	public void setHelpContents(JFrame frame) {
-		this.help_menu_item_Help_Contents.addActionListener(new HelpContentsListener(frame));
+		help_menu_item_Help_Contents.addActionListener(new HelpContentsListener(frame));
 	}
 
 	/**
@@ -161,16 +161,17 @@ public class CardFrame extends JFrame {
 			this.frame = frame;
 			this.frame.setTitle("Help");
 			this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			this.default_width = this.frame.getWidth();
-			this.default_height = this.frame.getHeight();
+			default_width = this.frame.getWidth();
+			default_height = this.frame.getHeight();
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			this.frame.setSize(this.default_width, this.default_height);
-			this.frame.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - this.frame.getWidth()) / 2, CardFrame.this.getY() + (CardFrame.this.getHeight() - this.frame.getHeight()) / 2);
-			this.frame.setVisible(true);
+			frame.setSize(default_width, default_height);
+			frame.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - frame.getWidth()) / 2,
+					CardFrame.this.getY() + (CardFrame.this.getHeight() - frame.getHeight()) / 2);
+			frame.setVisible(true);
 		}
 	}
 
@@ -180,7 +181,7 @@ public class CardFrame extends JFrame {
 	 * @param dialog About菜单项对应的<code>dialog</code>
 	 */
 	public void setAbout(Dialog dialog) {
-		this.help_menu_item_About.addActionListener(new AboutListener(dialog));
+		help_menu_item_About.addActionListener(new AboutListener(dialog));
 	}
 
 	/**
@@ -200,17 +201,17 @@ public class CardFrame extends JFrame {
 					AboutListener.this.dialog.dispose();
 				}
 			});
-			this.default_width = this.dialog.getWidth();
-			this.default_height = this.dialog.getHeight();
+			default_width = this.dialog.getWidth();
+			default_height = this.dialog.getHeight();
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			this.dialog.setSize(this.default_width, this.default_height);
-			this.dialog.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - this.dialog.getWidth()) / 2,
-					CardFrame.this.getY() + (CardFrame.this.getHeight() - this.dialog.getHeight()) / 2);
-			this.dialog.setVisible(true);
+			dialog.setSize(default_width, default_height);
+			dialog.setLocation(CardFrame.this.getX() + (CardFrame.this.getWidth() - dialog.getWidth()) / 2,
+					CardFrame.this.getY() + (CardFrame.this.getHeight() - dialog.getHeight()) / 2);
+			dialog.setVisible(true);
 		}
 	}
 
@@ -222,8 +223,8 @@ public class CardFrame extends JFrame {
 	 */
 	public JMenu getMenu(String menu_obj_name) {
 		JMenu result = null;
-		if (this.menu_map.containsKey(menu_obj_name)) {
-			result = this.menu_map.get(menu_obj_name);
+		if (menu_map.containsKey(menu_obj_name)) {
+			result = menu_map.get(menu_obj_name);
 		}
 		return result;
 	}
@@ -236,8 +237,8 @@ public class CardFrame extends JFrame {
 	 */
 	public GridBagPanel getGridBagPanel(String panel_obj_name) {
 		GridBagPanel result = null;
-		if (this.panel_map.containsKey(panel_obj_name)) {
-			result = this.panel_map.get(panel_obj_name);
+		if (panel_map.containsKey(panel_obj_name)) {
+			result = panel_map.get(panel_obj_name);
 		}
 		return result;
 	}
@@ -248,7 +249,7 @@ public class CardFrame extends JFrame {
 	 * @return 所有面板
 	 */
 	public Map<String, GridBagPanel> getAllGridBagPanel() {
-		return this.panel_map;
+		return panel_map;
 	}
 
 	/**
@@ -257,11 +258,11 @@ public class CardFrame extends JFrame {
 	 * @param gridBagPanel 目标gridBagPanel
 	 */
 	public void switchTo(Object gridBagPanel) {
-		Container contentPane = this.getContentPane();
+		Container contentPane = getContentPane();
 		if (gridBagPanel instanceof String) {
-			this.card_layout.show(contentPane, (String) gridBagPanel);
+			card_layout.show(contentPane, (String) gridBagPanel);
 		} else if (gridBagPanel instanceof GridBagPanel) {
-			this.card_layout.show(contentPane, contentPane.getComponent(contentPane.getComponentZOrder((Component) gridBagPanel)).getName());
+			card_layout.show(contentPane, contentPane.getComponent(contentPane.getComponentZOrder((Component) gridBagPanel)).getName());
 		}
 	}
 }

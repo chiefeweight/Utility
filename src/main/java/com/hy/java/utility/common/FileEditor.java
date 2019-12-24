@@ -10,7 +10,6 @@ import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 /**
  * 用于编辑File，可以实现读、写任意数据的操作
@@ -57,30 +56,30 @@ public class FileEditor {
 	}
 
 	private boolean fileIsReady() {
-		if (this.file.exists()) {
-			if (this.file.isDirectory()) {
-				System.out.println("File '" + this.file + "' exists but is a directory");
-				this.file_available = false;
+		if (file.exists()) {
+			if (file.isDirectory()) {
+				System.out.println("File '" + file + "' exists but is a directory");
+				file_available = false;
 			}
-			if (this.file.canWrite() == false) {
-				System.out.println("File '" + this.file + "' cannot be written to");
-				this.file_available = false;
+			if (file.canWrite() == false) {
+				System.out.println("File '" + file + "' cannot be written to");
+				file_available = false;
 			}
 		} else {
 			/*
 			 * 如果目标文件指明了父路径，而父路径在文件系统中不存在，则创建父路径
 			 */
-			File parent = this.file.getParentFile();
+			File parent = file.getParentFile();
 			if (parent != null && !parent.exists()) {
 				if (parent.mkdirs() == false) {
-					System.out.println("File '" + this.file + "' could not be created");
-					this.file_available = false;
+					System.out.println("File '" + file + "' could not be created");
+					file_available = false;
 				} else {
 					System.out.println("Directories were created: " + parent.getAbsolutePath());
 				}
 			}
 		}
-		return this.file_available;
+		return file_available;
 	}
 
 	/**
@@ -90,9 +89,9 @@ public class FileEditor {
 	 */
 	public byte[] readFileToByteArray() {
 		byte[] file_content_byte_array = null;
-		if (this.file.exists()) {
+		if (file.exists()) {
 			try {
-				file_content_byte_array = FileUtils.readFileToByteArray(this.file);
+				file_content_byte_array = FileUtils.readFileToByteArray(file);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -119,9 +118,9 @@ public class FileEditor {
 	 */
 	public String readFileToString(String encoding) {
 		String file_content_string = null;
-		if (this.file.exists()) {
+		if (file.exists()) {
 			try {
-				file_content_string = FileUtils.readFileToString(this.file, encoding);
+				file_content_string = FileUtils.readFileToString(file, encoding);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -148,9 +147,9 @@ public class FileEditor {
 	 */
 	public List<String> readLines(String encoding) {
 		List<String> file_line_list = null;
-		if (this.file.exists()) {
+		if (file.exists()) {
 			try {
-				file_line_list = FileUtils.readLines(this.file, encoding);
+				file_line_list = FileUtils.readLines(file, encoding);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -169,19 +168,18 @@ public class FileEditor {
 	 */
 	public void write(byte[] bytes, boolean append) {
 		OutputStream output_stream = null;
-		try {
-			if (fileIsReady()) {
-				output_stream = new FileOutputStream(this.file, append);
+		if (fileIsReady()) {
+			try {
+				output_stream = new FileOutputStream(file, append);
 				output_stream.write(bytes);
+				output_stream.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(output_stream);
 		}
 	}
 
@@ -200,7 +198,7 @@ public class FileEditor {
 	 * 向文件中写入数据。数据以{@code InputStream}的形式封存
 	 *
 	 * @param input_stream 封存着要写入的数据
-	 * @param append 是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
+	 * @param append       是否续写。如果是<code>false</code>，则会清空原文件所有内容，重新写入；如果是<code>true</code>，则会在原文件的末尾开始写入
 	 */
 	public void write(InputStream input_stream, boolean append) {
 		try {
@@ -225,6 +223,6 @@ public class FileEditor {
 	 * @return file
 	 */
 	public File getFile() {
-		return this.file;
+		return file;
 	}
 }

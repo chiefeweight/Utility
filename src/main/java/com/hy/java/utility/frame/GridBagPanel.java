@@ -55,11 +55,11 @@ public class GridBagPanel extends JPanel {
 	 * @param panel_obj_name 这个panel在其所属{@code CardFrame}中的标识。
 	 */
 	public GridBagPanel(String panel_obj_name) {
-		this.setName(panel_obj_name);
-		this.grid_bag_layout = new GridBagLayout();
-		this.setLayout(this.grid_bag_layout);
-		this.grid_bag_constraints = new GridBagConstraints();
-		this.component_map = new HashMap<>();
+		setName(panel_obj_name);
+		grid_bag_layout = new GridBagLayout();
+		setLayout(grid_bag_layout);
+		grid_bag_constraints = new GridBagConstraints();
+		component_map = new HashMap<>();
 	}
 
 	/**
@@ -84,23 +84,23 @@ public class GridBagPanel extends JPanel {
 	 */
 	public void addComponent(Component comp, String comp_obj_name, int row, int column, int gridwidth, int gridheight, double weightx, double weighty,
 			boolean fill) {
-		if (!this.component_map.containsKey(comp_obj_name)) {
+		if (!component_map.containsKey(comp_obj_name)) {
 			comp.setName(comp_obj_name);
-			this.grid_bag_constraints.gridy = row - 1;
-			this.grid_bag_constraints.gridx = column - 1;
-			this.grid_bag_constraints.gridwidth = gridwidth;
-			this.grid_bag_constraints.gridheight = gridheight;
-			this.grid_bag_constraints.weightx = weightx;
-			this.grid_bag_constraints.weighty = weighty;
+			grid_bag_constraints.gridy = row - 1;
+			grid_bag_constraints.gridx = column - 1;
+			grid_bag_constraints.gridwidth = gridwidth;
+			grid_bag_constraints.gridheight = gridheight;
+			grid_bag_constraints.weightx = weightx;
+			grid_bag_constraints.weighty = weighty;
 			if (fill) {
-				this.grid_bag_constraints.fill = GridBagConstraints.BOTH;
+				grid_bag_constraints.fill = GridBagConstraints.BOTH;
 			} else {
-				this.grid_bag_constraints.fill = GridBagConstraints.NONE;
+				grid_bag_constraints.fill = GridBagConstraints.NONE;
 			}
-			this.grid_bag_layout.setConstraints(comp, this.grid_bag_constraints);
-			this.add(comp);
-			this.component_map.put(comp.getName(), comp);
-			this.validate();
+			grid_bag_layout.setConstraints(comp, grid_bag_constraints);
+			add(comp);
+			component_map.put(comp.getName(), comp);
+			validate();
 		} else {
 			System.out.println(comp_obj_name + "已存在，该组件添加失败。请给组件对象重起comp_obj_name");
 		}
@@ -114,8 +114,8 @@ public class GridBagPanel extends JPanel {
 	 */
 	public Component getComponent(String comp_obj_name) {
 		Component result = null;
-		if (this.component_map.containsKey(comp_obj_name)) {
-			result = this.component_map.get(comp_obj_name);
+		if (component_map.containsKey(comp_obj_name)) {
+			result = component_map.get(comp_obj_name);
 		}
 		return result;
 	}
@@ -124,6 +124,6 @@ public class GridBagPanel extends JPanel {
 	public void removeAll() {
 		// TODO Auto-generated method stub
 		super.removeAll();
-		this.component_map.clear();
+		component_map.clear();
 	}
 }

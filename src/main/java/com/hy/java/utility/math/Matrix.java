@@ -22,34 +22,34 @@ public class Matrix {
 		if (checkDimension(row_num, column_num, 1, 1, Operations.POSITIVE)) {
 			this.row_num = row_num;
 			this.column_num = column_num;
-			this.elements = new BigDecimal[this.row_num][this.column_num];
+			elements = new BigDecimal[this.row_num][this.column_num];
 		}
 	}
 
 	public int getRowNum() {
-		return this.row_num;
+		return row_num;
 	}
 
 	public int getColumnNum() {
-		return this.column_num;
+		return column_num;
 	}
 
 	public void setElement(int row_index, int column_index, double element) {
-		if (checkDimension(row_index, column_index, this.getRowNum(), this.getColumnNum(), Operations.GET_SET)) {
-			this.elements[row_index - 1][column_index - 1] = BigDecimal.valueOf(element);
+		if (checkDimension(row_index, column_index, getRowNum(), getColumnNum(), Operations.GET_SET)) {
+			elements[row_index - 1][column_index - 1] = BigDecimal.valueOf(element);
 		}
 	}
 
 	public void setElement(int row_index, int column_index, BigDecimal element) {
-		if (checkDimension(row_index, column_index, this.getRowNum(), this.getColumnNum(), Operations.GET_SET)) {
-			this.elements[row_index - 1][column_index - 1] = element;
+		if (checkDimension(row_index, column_index, getRowNum(), getColumnNum(), Operations.GET_SET)) {
+			elements[row_index - 1][column_index - 1] = element;
 		}
 	}
 
 	public BigDecimal getElement(int row_index, int column_index) {
 		BigDecimal result = null;
-		if (checkDimension(row_index, column_index, this.getRowNum(), this.getColumnNum(), Operations.GET_SET)) {
-			result = this.elements[row_index - 1][column_index - 1];
+		if (checkDimension(row_index, column_index, getRowNum(), getColumnNum(), Operations.GET_SET)) {
+			result = elements[row_index - 1][column_index - 1];
 		}
 		return result;
 	}
@@ -62,10 +62,10 @@ public class Matrix {
 	 */
 	public Vector getRowVector(int row_index) {
 		Vector result = null;
-		if (checkDimension(row_index, 1, this.getRowNum(), 1, Operations.GET_SET)) {
-			result = new Vector(this.getColumnNum());
+		if (checkDimension(row_index, 1, getRowNum(), 1, Operations.GET_SET)) {
+			result = new Vector(getColumnNum());
 			for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
-				result.setCoordinate(coordinate_index, this.elements[row_index - 1][coordinate_index - 1]);
+				result.setCoordinate(coordinate_index, elements[row_index - 1][coordinate_index - 1]);
 			}
 		}
 		return result;
@@ -79,17 +79,17 @@ public class Matrix {
 	 */
 	public Vector getColumnVector(int column_index) {
 		Vector result = null;
-		if (checkDimension(1, column_index, 1, this.getColumnNum(), Operations.GET_SET)) {
-			result = new Vector(this.getRowNum());
+		if (checkDimension(1, column_index, 1, getColumnNum(), Operations.GET_SET)) {
+			result = new Vector(getRowNum());
 			for (int coordinate_index = 1; coordinate_index <= result.getDimension(); coordinate_index++) {
-				result.setCoordinate(coordinate_index, this.elements[coordinate_index - 1][column_index - 1]);
+				result.setCoordinate(coordinate_index, elements[coordinate_index - 1][column_index - 1]);
 			}
 		}
 		return result;
 	}
 
 	public BigDecimal[][] getElements() {
-		return this.elements;
+		return elements;
 	}
 
 	/**
@@ -122,11 +122,13 @@ public class Matrix {
 	public static Matrix matrixAddition(Matrix matrix_A, Matrix matrix_B) {
 		Matrix result = null;
 		// 同型则可以做加法
-		if (checkDimension(matrix_A.getRowNum(), matrix_A.getColumnNum(), matrix_B.getRowNum(), matrix_B.getColumnNum(), Operations.MATRIX_ADDITION)) {
+		if (checkDimension(matrix_A.getRowNum(), matrix_A.getColumnNum(), matrix_B.getRowNum(), matrix_B.getColumnNum(),
+				Operations.MATRIX_ADDITION)) {
 			result = new Matrix(matrix_A.getRowNum(), matrix_A.getColumnNum());
 			for (int row_index = 1; row_index <= result.getRowNum(); row_index++) {
 				for (int column_index = 1; column_index <= result.getColumnNum(); column_index++) {
-					result.setElement(row_index, column_index, matrix_A.getElement(row_index, column_index).add(matrix_B.getElement(row_index, column_index)));
+					result.setElement(row_index, column_index,
+							matrix_A.getElement(row_index, column_index).add(matrix_B.getElement(row_index, column_index)));
 				}
 			}
 		}
@@ -190,7 +192,8 @@ public class Matrix {
 	public static Matrix matrixMultiplication(Matrix matrix_A, Matrix matrix_B) {
 		Matrix result = null;
 		// 如果矩阵A列数等于矩阵B行数，则可做乘法
-		if (checkDimension(matrix_A.getRowNum(), matrix_A.getColumnNum(), matrix_B.getRowNum(), matrix_B.getColumnNum(), Operations.MATRIX_MULTIPLICATION)) {
+		if (checkDimension(matrix_A.getRowNum(), matrix_A.getColumnNum(), matrix_B.getRowNum(), matrix_B.getColumnNum(),
+				Operations.MATRIX_MULTIPLICATION)) {
 			// 结果矩阵行数等于矩阵A行数，列数等于矩阵B列数
 			result = new Matrix(matrix_A.getRowNum(), matrix_B.getColumnNum());
 			// 矩阵A按行遍历
