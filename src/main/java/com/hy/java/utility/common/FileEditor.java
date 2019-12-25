@@ -22,7 +22,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileEditor {
 	private File file;
-	boolean file_available = true;
+	private boolean file_available = true;
 
 	/**
 	 * 构造新的{@code FileEditor}，可实现对file_path所指文件的读、写操作
