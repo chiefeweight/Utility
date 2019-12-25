@@ -47,10 +47,10 @@ import javax.swing.WindowConstants;
  * @author chiefeweight
  */
 public class CardFrame extends JFrame {
-	public static final int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width;
-	public static final int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	public static final int default_width = CardFrame.screen_width / 2;
-	public static final int default_height = CardFrame.screen_height / 2;
+	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+	public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+	public static final int DEFAULT_WIDTH = CardFrame.SCREEN_WIDTH / 2;
+	public static final int DEFAULT_HEIGHT = CardFrame.SCREEN_HEIGHT / 2;
 	/**
 	 * generated serialVersionUID
 	 */
@@ -82,7 +82,7 @@ public class CardFrame extends JFrame {
 	private void initFrame(String title, int width, int height) {
 		setTitle(title);
 		setSize(width, height);
-		setLocation((CardFrame.screen_width - width) / 2, (CardFrame.screen_height - height) / 2);
+		setLocation((CardFrame.SCREEN_WIDTH - width) / 2, (CardFrame.SCREEN_HEIGHT - height) / 2);
 		card_layout = new CardLayout();
 		setLayout(card_layout);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
