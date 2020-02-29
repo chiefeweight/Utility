@@ -1,4 +1,4 @@
-package com.hy.java.utility.frame;
+package com.hy.java.utility.gui;
 
 import java.awt.CardLayout;
 import java.awt.Component;

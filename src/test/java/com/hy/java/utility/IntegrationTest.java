@@ -17,8 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import com.hy.java.utility.common.SystemTime;
-import com.hy.java.utility.frame.CardFrame;
-import com.hy.java.utility.frame.GridBagPanel;
+import com.hy.java.utility.gui.CardFrame;
+import com.hy.java.utility.gui.GridBagPanel;
 import com.hy.java.utility.math.NormalDistribution;
 
 public class IntegrationTest {
