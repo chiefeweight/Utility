@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Traverser {
-	/*
+	/**
 	 * 如果path指向文件，则返回的Node包含该文件的path
 	 * 
 	 * 如果path指向文件夹，则返回的Node包含该文件夹的path，且children包含该文件夹下的所有文件/文件夹
