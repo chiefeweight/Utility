@@ -13,6 +13,8 @@ import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hy.java.utility.common.FileEditor;
@@ -127,13 +129,13 @@ public class HttpUtil {
 	}
 
 	/**
-	 * 向目标url发送请求，并将返回信息（JSON）保存在{@code JSONObject}中
+	 * 向目标url发送请求，并将返回的JSON格式信息保存在{@code JSONArray}中。如果返回的格式是{@code JSONObject}，则将其保存在只有它一个元素的{@code JSONArray}中。
 	 * 
 	 * @param url 目标url
-	 * @return {@code JSONObject}对象，保存了JSON信息
+	 * @return {@code JSONArray}对象，保存了返回的JSON格式信息
 	 */
-	public static JSONObject getJSON(String url) {
-		JSONObject json = null;
+	public static JSONArray getJSON(String url) {
+		JSONArray json = null;
 		String response_body = null;
 		CloseableHttpClient http_client = HttpClients.createDefault();
 		try {
@@ -171,7 +173,13 @@ public class HttpUtil {
 				e.printStackTrace();
 			}
 		}
-		json = new JSONObject(response_body);
+		try {
+			json = new JSONArray(response_body);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			json = new JSONArray();
+			json.put(new JSONObject(response_body));
+		}
 		return json;
 	}
 
