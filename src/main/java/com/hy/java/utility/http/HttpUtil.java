@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -28,104 +29,30 @@ import com.hy.java.utility.common.FileEditor;
  */
 public class HttpUtil {
 	/**
-	 * 向目标url发送请求，并将返回信息（XML或JSON）保存在{@code String}中
+	 * 向目标url发送请求，并将返回的信息（XML、JSON等）保存在{@code String}中
 	 * 
 	 * @param url 目标url
 	 * @return {@code String}类型的返回信息
 	 */
 	public static String getString(String url) {
-		String response_body = null;
-		CloseableHttpClient http_client = HttpClients.createDefault();
-		try {
-			// 设置http方法
-			HttpGet http_method_get = new HttpGet(url);
-			// 自定义response_handler，用于处理http请求的返回值
-			ResponseHandler<String> response_handler = new ResponseHandler<String>() {
-				// 实现处理方法
-				@Override
-				public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
-			};
-			try {
-				// 执行http方法，存储到response_body中
-				response_body = http_client.execute(http_method_get, response_handler);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} finally {
-			try {
-				http_client.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return response_body;
+		return httpGetString(url);
 	}
 
 	/**
-	 * 向目标url发送请求，并将返回信息（XML）保存在{@code Document}中
+	 * 向目标url发送请求，并将返回的信息（XML）保存在{@code Document}中
 	 * 
 	 * @param url 目标url
 	 * @return {@code Document}对象，保存了XML信息
 	 */
 	public static Document getXML(String url) {
-		Document document = null;
-		String response_body = null;
-		CloseableHttpClient http_client = HttpClients.createDefault();
+		Document result = null;
 		try {
-			// 设置http方法
-			HttpGet http_method_get = new HttpGet(url);
-			// 自定义response_handler，用于处理http请求的返回值
-			ResponseHandler<String> response_handler = new ResponseHandler<String>() {
-				// 实现处理方法
-				@Override
-				public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
-			};
-			try {
-				// 执行http方法，存储到response_body中
-				response_body = http_client.execute(http_method_get, response_handler);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} finally {
-			try {
-				http_client.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			document = DocumentHelper.parseText(response_body);
+			result = DocumentHelper.parseText(httpGetString(url));
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return document;
+		return result;
 	}
 
 	/**
@@ -135,8 +62,37 @@ public class HttpUtil {
 	 * @return {@code JSONArray}对象，保存了返回的JSON格式信息
 	 */
 	public static JSONArray getJSON(String url) {
-		JSONArray json = null;
-		String response_body = null;
+		JSONArray result = null;
+		String response_body = httpGetString(url);
+		try {
+			result = new JSONArray(response_body);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			result = new JSONArray();
+			result.put(new JSONObject(response_body));
+		}
+		return result;
+	}
+
+	/**
+	 * 向目标url发送请求，并将返回的文件保存到本地
+	 * 
+	 * @param url       目标url
+	 * @param file_path 保存文件的路径
+	 */
+	public static void saveFile(String url, String file_path) {
+		// 执行http方法，存储到response_body中
+		byte[] response_body = httpGetByteArray(url);
+		// 将response_body写入文件
+		FileEditor fileEditor = new FileEditor(file_path);
+		fileEditor.write(response_body, false);
+	}
+
+	/**
+	 * 向目标url发送http get请求，将返回的结果保存在{@code String}中供后续处理
+	 */
+	private static String httpGetString(String url) {
+		String result = null;
 		CloseableHttpClient http_client = HttpClients.createDefault();
 		try {
 			// 设置http方法
@@ -145,19 +101,26 @@ public class HttpUtil {
 			ResponseHandler<String> response_handler = new ResponseHandler<String>() {
 				// 实现处理方法
 				@Override
-				public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
+				public String handleResponse(final HttpResponse response) {
+					String response_body = null;
+					HttpEntity entity = response.getEntity();
+					if (entity != null) {
+						try {
+							response_body = EntityUtils.toString(entity);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
+					return response_body;
 				}
 			};
+			// 执行http方法，存到result中
 			try {
-				// 执行http方法，存储到response_body中
-				response_body = http_client.execute(http_method_get, response_handler);
+				result = http_client.execute(http_method_get, response_handler);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -166,6 +129,7 @@ public class HttpUtil {
 				e.printStackTrace();
 			}
 		} finally {
+			// 关闭http_client
 			try {
 				http_client.close();
 			} catch (IOException e) {
@@ -173,23 +137,14 @@ public class HttpUtil {
 				e.printStackTrace();
 			}
 		}
-		try {
-			json = new JSONArray(response_body);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			json = new JSONArray();
-			json.put(new JSONObject(response_body));
-		}
-		return json;
+		return result;
 	}
 
 	/**
-	 * 向目标url发送请求，并保存返回的文件到本地
-	 * 
-	 * @param url       目标url
-	 * @param file_path 保存文件的路径
+	 * 向目标url发送http get请求，将返回的结果保存在{@code byte[]}中供后续处理
 	 */
-	public static void saveFile(String url, String file_path) {
+	private static byte[] httpGetByteArray(String url) {
+		byte[] result = null;
 		CloseableHttpClient http_client = HttpClients.createDefault();
 		try {
 			// 设置http方法
@@ -198,22 +153,26 @@ public class HttpUtil {
 			ResponseHandler<byte[]> response_handler = new ResponseHandler<byte[]>() {
 				// 实现处理方法
 				@Override
-				public byte[] handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toByteArray(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
+				public byte[] handleResponse(final HttpResponse response) {
+					byte[] response_body = null;
+					HttpEntity entity = response.getEntity();
+					if (entity != null) {
+						try {
+							response_body = EntityUtils.toByteArray(entity);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
+					return response_body;
 				}
 			};
+			// 执行http方法，存到result中
 			try {
-				// 执行http方法，存储到response_body中
-				byte[] response_body = http_client.execute(http_method_get, response_handler);
-				// 将response_body写入文件
-				FileEditor fileEditor = new FileEditor(file_path);
-				fileEditor.write(response_body, false);
+				result = http_client.execute(http_method_get, response_handler);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -222,6 +181,7 @@ public class HttpUtil {
 				e.printStackTrace();
 			}
 		} finally {
+			// 关闭http_client
 			try {
 				http_client.close();
 			} catch (IOException e) {
@@ -229,5 +189,6 @@ public class HttpUtil {
 				e.printStackTrace();
 			}
 		}
+		return result;
 	}
 }
