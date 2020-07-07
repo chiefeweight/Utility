@@ -65,11 +65,17 @@ public class HttpUtil {
 		JSONArray result = null;
 		String response_body = httpGetString(url);
 		try {
+			// 将返回的JSON格式信息保存在JSONArray中
 			result = new JSONArray(response_body);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			// 如果返回的格式是JSONObject，则将其保存在只有它一个元素的JSONArray中
 			result = new JSONArray();
-			result.put(new JSONObject(response_body));
+			try {
+				result.put(new JSONObject(response_body));
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		return result;
 	}
