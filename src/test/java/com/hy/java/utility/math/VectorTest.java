@@ -2,7 +2,9 @@ package com.hy.java.utility.math;
 
 import java.math.BigDecimal;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import com.hy.java.utility.math.algebra.Vector;
 
 public class VectorTest {
 	@Test

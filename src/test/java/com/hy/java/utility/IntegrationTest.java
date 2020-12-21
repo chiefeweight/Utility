@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 import com.hy.java.utility.common.SystemTime;
 import com.hy.java.utility.gui.CardFrame;
 import com.hy.java.utility.gui.GridBagPanel;
-import com.hy.java.utility.math.NormalDistribution;
+import com.hy.java.utility.math.probabilityandstatistics.NormalDistribution;
 
 public class IntegrationTest {
 
