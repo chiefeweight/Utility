@@ -1,6 +1,6 @@
 package com.hy.java.utility.common;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.hy.java.utility.common.Traverser.FileNode;
 
