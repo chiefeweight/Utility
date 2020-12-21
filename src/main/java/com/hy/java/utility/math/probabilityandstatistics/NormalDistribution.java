@@ -1,4 +1,4 @@
-package com.hy.java.utility.math;
+package com.hy.java.utility.math.probabilityandstatistics;
 
 import java.util.Random;
 

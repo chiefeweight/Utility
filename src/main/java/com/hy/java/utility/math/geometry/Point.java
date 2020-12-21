@@ -1,4 +1,4 @@
-package com.hy.java.utility.math;
+package com.hy.java.utility.math.geometry;
 
 public class Point {
 	/**

@@ -2,6 +2,10 @@ package com.hy.java.utility.math;
 
 import org.junit.jupiter.api.Test;
 
+import com.hy.java.utility.math.geometry.Line;
+import com.hy.java.utility.math.geometry.Point;
+import com.hy.java.utility.math.geometry.Segment;
+
 public class LineTest {
 	@Test
 	public void distanceTest() {

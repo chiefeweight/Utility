@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
+import com.hy.java.utility.math.algebra.Vector;
+
 public class VectorTest {
 	@Test
 	public void vector() {
