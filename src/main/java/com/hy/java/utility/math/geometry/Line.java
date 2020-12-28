@@ -35,7 +35,7 @@ public class Line {
 	 */
 	public Line(double A, double B, double C) {
 		if (A == 0.0 && B == 0.0) {
-			System.err.println("A and B is 0");
+			System.err.println("A and B are 0");
 		} else {
 			this.A = A;
 			this.B = B;
